@@ -1,0 +1,36 @@
+{
+    "request_id": "adf0-3b83c8d8eb0e-d705b620-3086-2311",
+    "finished": true,
+    "statusPerc": 100,
+    "statusMsg": "Completato",
+    "entities": [
+        {"label": "Lorem", "score": 1.0},
+        {"label": "ipsum", "score": 0.8},
+        {"label": "dolor", "score": 0.65},
+        {"label": "sit" , "score": 0.63},
+        {"label": "amet", "score": 0.6},
+        {"label": "consectetur", "score": 0.6},
+        {"label": "adipisici", "score": 0.6},
+        {"label": "elit", "score": 0.3},
+        {"label": "sed", "score": 0.3},
+        {"label": "eiusmod", "score": 0.25},
+        {"label": "tempor", "score": 0.25},
+        {"label": "incidunt", "score": 0.25},
+        {"label": "ut", "score": 0.2},
+        {"label": "labore", "score": 0.2},
+        {"label": "ut", "score": 0.2},
+        {"label": "et", "score": 0.2},
+        {"label": "dolore", "score": 0.1},
+        {"label": "magna", "score": 0.1},
+        {"label": "aliqua", "score": 0.1}
+    ],
+    "classes": [
+        {"label": "Sed" },
+        {"label": "haec" },
+        {"label": "quis" },
+        {"label": "possit"  },
+        {"label": "intrepidus" },
+        {"label": "aestimare" },
+        {"label": "tellus"  }
+    ]
+}

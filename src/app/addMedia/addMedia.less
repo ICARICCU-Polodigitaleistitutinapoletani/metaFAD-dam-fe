@@ -1,0 +1,422 @@
+.addMedia{
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow-y: auto;
+    .maxUpload {
+        padding: 0 15px 10px;
+    }
+    .contentUpload{
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .filter-media-type{
+        height: 31px !important;
+        line-height: 7px;
+        margin-top: 0px !important;
+        font-size: 12px;
+        color: #000 !important;
+        padding: 10px 0;
+        .filter-media-type-text {
+            height: 31px;
+            position: relative;
+            top: -11px;
+            line-height: 31px;
+            padding: 0 10px;
+            .right {
+                padding-top: 10px;
+            }
+        }
+        .filter-media-type-dropdown{
+            box-sizing: content-box;
+            left: -1px;
+            border: 1px solid #aaa;
+            border-top: none;
+            top: -11px;
+            input[type=checkbox]{
+                height: 15px;
+            }
+            li:hover{
+                background-color: white !important;
+            }
+
+        }
+    }
+    .box-uploadMedia{
+        border: 2px dashed #999999;
+        max-height: 530px;
+    }
+    .dropzone{
+        height: 100%;
+        border-radius: 0px;
+        background-color: white;
+
+        .dz-preview{
+            padding: 0px;
+        }
+
+        .dz-message{
+            font-weight: 200;
+            font-size: 30px;
+            text-align: center;
+            margin: 1em 0;
+
+            .note{
+                font-size: 20px;
+                font-weight: 200;
+                display: block;
+                margin-top: 1.4rem;
+            }
+            .button{
+                width: 165px;
+                font-size: 0.5em;
+                font-weight: 200;
+                display: block;
+                margin: auto;
+                margin-top: 1.4rem;
+                padding-bottom: 25px;
+            }
+        }
+
+        .dz-details{
+            margin-bottom: 0px;
+            img{
+                top: 0px;
+                bottom: 0px;
+                right: 0px;
+                left: 0px;
+                margin: auto;
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+            }
+        }
+        .dz-details.active{
+            border: 2px solid @green;
+        }
+        .dz-details.active-error{
+            border: 2px solid @red;
+        }
+        .dz-error-mark, .dz-success-mark{
+            background: none;
+            right: -15px;
+            top: -15px;
+            i{
+                background-color: #ffffff;
+                border-radius: 100%;
+            }
+
+        }
+
+        .dz-error-mark{
+            color: @red;
+        }
+
+        .dz-success-mark{
+            color: @green;
+            .fa-check{
+                font-size: 22px;
+                padding: 5px;
+            }
+        }
+
+        .dz-progress{
+            opacity: 1;
+            background-color: black;
+            left: -1px;
+            right: -1px;
+        }
+
+        .dz-upload{
+            background-color: @orange;
+            background-image: none;
+            border-radius:0px;
+        }
+    }
+    .dz-success .dz-upload{
+        background-color: @green;
+    }
+    .dropzone-not-empty{
+    }
+    .add-from-computer-or-server{
+        margin-bottom:20px;
+        cursor:pointer;
+    }
+    /*.add-from-computer, .add-from-server{
+        position: absolute;
+        left: 0px;
+        right: 335px;
+        height: 100%;
+        min-width: 185px;
+    }*/
+    table{
+        tr:first-child{
+            background: #f1f1f1;
+            background: -moz-linear-gradient(top,  #f1f1f1 0%, #e2e2e2 100%);
+            background: -webkit-linear-gradient(top,  #f1f1f1 0%,#e2e2e2 100%);
+            background: linear-gradient(to bottom,  #f1f1f1 0%,#e2e2e2 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1f1f1', endColorstr='#e2e2e2',GradientType=0 );
+        }
+        tr:nth-child(odd) {
+            background-color:#F9F9F9;
+        }
+        td{
+            font-weight: bold;
+        }
+        input[type='checkbox']{
+            font-size: 16px;
+        }
+    }
+    .posizione{
+        font-size: 18px;
+        a{
+            cursor:pointer;
+        }
+    }
+    .add-from-server{
+        .posizione{
+            a{
+                cursor:pointer;
+            }
+        }
+        table{
+            th:first-child{
+                width: 15px;
+            }
+            th{
+                font-weight:500;
+                background-color:@light-grey;
+            }
+            th, td{
+                padding:5px;
+                border:1px solid @grey;
+            }
+        }
+    }
+
+    .addMediaOption{
+        margin-top: 15px;
+        .addMediaOptionTitle{
+            font-weight: 200;
+            padding-left: 0px;
+            padding-top: 8px;
+            position: relative;
+            float: left;
+        }
+        .dropdown-multiselect{
+            width: 100%;
+            button{
+                width: 100%;
+                text-align: left;
+                font-size: 12px;
+                font-weight: 200;
+            }
+            ul{
+                width: 100%;
+                margin: 0px;
+                border-radius: 0px;
+                a{
+                    font-size: 12px;
+                    font-weight: 200;
+                }
+            }
+        }
+        input[type=text]{
+            width: 100%;
+            font-size: 12px;
+            padding-left: 5px;
+            font-weight: 200;
+        }
+        input[type=checkbox]{
+            position: relative;
+            float: left;
+            margin: 0px 15px 0px 15px
+        }
+    }
+    .checkbox{
+        margin: 0px;
+        span{
+            position: relative;
+            float: left;
+            margin-top: 12px;
+        }
+    }
+    .uiselect{
+        border-radius: 0px;
+        height: 34px;
+        .ui-select-dropdown{
+            padding: 0px;
+        }
+        .ui-select-choices{
+            border-radius: 0px;
+        }
+
+    }
+
+    .form-control-feedback{
+        top: 17px !important;
+        right: 0 !important;
+    }
+
+    .right-box-container{
+        min-width: 280px;
+    }
+    .right-box{
+        background-color: #f1f1f1;
+        padding: 15px;
+        position: relative;
+        float: left;
+        width: 100%;
+        max-height: 496px;
+        .preview-box{
+            position: relative;
+            float: left;
+            margin-bottom: 15px;
+            width: 100%;
+
+            .file-image-box{
+                width: 100px;
+                height: 100px;
+                position: relative;
+                border: 1px solid @grey;
+                .preview-image{
+                    position: absolute;
+                    top: 0px;
+                    bottom: 0px;
+                    right: 0px;
+                    left: 0px;
+                    margin: auto;
+                    max-width: 100%;
+                    max-height: 100%;
+                    width: auto;
+                    height: auto;
+
+                }
+            }
+
+
+            .file-info-box{
+                position: relative;
+                float: left;
+                .file-title{
+                    font-size: 16px;
+                    font-weight: 200;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    line-height: 1.2;
+                    letter-spacing: 0.05rem;
+                    max-height: 95px;
+                }
+                .file-size, .file-type{
+                    font-weight: 200;
+                    letter-spacing: 0.05rem;
+                    font-size: 13px;
+                    margin-bottom: 4px;
+                }
+                .file-error{
+                    color: @red;
+                }
+                .btn-remove{
+                    background-color: @red;
+                    color: white;
+                    font-size: 12px;
+                    padding: 5px 10px 5px 10px;
+                    border: none;
+                    margin-top: 10px;
+                    font-weight: 200;
+                    letter-spacing: 0.05rem;
+                }
+            }
+        }
+
+        .schema-form-section{
+            padding: 0px;
+        }
+
+        input[type=checkbox]{
+            position: relative;
+            float: left;
+        }
+    }
+    .button-set{
+        height: 40px;
+        background-color: grey;
+    }
+    .buttonSave{
+        padding: 4px;
+        font-size: 16px;
+        font-weight: 200;
+    }
+    #addFromMultiple{
+        .has-success {
+            .form-control {
+                border: 1px solid #bbbbbb;
+            }
+            .form-control:focus {
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            }
+            .glyphicon-ok {
+                display: none;
+            }
+
+            .control-label {
+                color: #000000;
+            }
+
+        }
+        .button-set{
+            height: 40px;
+            background-color: grey;
+        }
+    }
+    .form-control-feedback.glyphicon-remove{
+        display: none;
+    }
+    .colFol-dropdown{
+        li{
+            padding: 1px 3px 1px 10px !important;
+        }
+        .fancytree-expander{
+            font-size:20px;
+            line-height: 14px;
+        }
+        .fancytree-icon {
+            display: none;
+        }
+        .fancytree-checkbox {
+            font-size: 18px;
+            margin-left: 3px;
+        }
+        .fancytree-title{
+            font-size: 13px;
+            line-height: 18px;
+        }
+        input{
+            height:auto;
+            margin-left: 10px;
+        }
+        span{
+            a{
+                color: black;
+                &:hover{
+                    color: @blue;
+                }
+            }
+            a.active{
+                color: @blue;
+            }
+        }
+        .newColFol{
+            input{
+                font-size: 20px;
+                margin-top: 8px !important;
+                margin-left: 22px !important;
+                margin-right: 0px !important;
+            }
+            .fancytree-title{
+                margin-left:5px;
+                padding: 5px 2px 3px;
+            }
+        }
+    }
+}

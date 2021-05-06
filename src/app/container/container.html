@@ -1,0 +1,224 @@
+<div class="contenitore" class="container-fluid">
+    
+    <div class="row containerTab" ng-class="{'visible': container.state==='edit'}">
+        <div class="col-xs-2 title-sezione">Modifica contenitore</div>
+        <div class="col-xs-10">
+            <ul class="tabs">
+                <li class="tab pointer light-on-active" ng-click="container.setActiveTab('mediaCollegati')" ng-class="{active:container.activeTab=='mediaCollegati'}"><i class="fa fa-sitemap"></i><a>Media collegati</a></li>
+                <li class="tab pointer light-on-active" ng-click="container.setActiveTab('collection')" ng-class="{active:container.activeTab=='collection'}"><i class="fa fa-th"></i><a>Collezioni</a></li>
+                <li class="tab pointer light-on-active" ng-click="container.setActiveTab('folder')" ng-class="{active:container.activeTab=='folder'}"><i class="fa fa-folder-open"></i><a>Cartelle</a></li>
+                <li class="tab pointer light-on-active" ng-if="container.state==='edit'" ng-click="container.setActiveTab('ContainedMedia')" ng-class="{active:container.activeTab==='ContainedMedia'}"><a>Media contenuti</a></li>
+                <li class="tab pointer light-on-active" ng-click="container.setActiveTab('MainData')" ng-class="{active:container.activeTab==='MainData'}"><a>Metadati</a></li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+    </div>
+
+    <div id="tab-content" class="container-fluid tab-content">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 right-box">
+                <div class="col-xs-12 image-box" data-drop="true" jqyoui-droppable="{onDrop:'jqyouiDraggable.onDrop'}">
+                    <form class="copertina-dropzone dropzone" method="post" enctype="multipart/form-data" ng-dropzone dropzone="container.dropzone" dropzone-config="container.dropzoneConfig">
+                    </form>
+                    <div class="copertina-msg">Cambia la copertina</div>
+                    <img-middle-responsive ng-class="{'not-visible' : container.dropzoneHasOneBytestream}" default-url="img/default_document.png" img-url="{{container.thumbnail}}" options="container.imgMiddleRespOptions"></img-middle-responsive>
+                </div>
+                <div class="box-btn-action" ng-if="container.activeTab!=='collection' && container.activeTab!=='folder' && container.activeTab!=='mediaCollegati'">
+                    <div class="col-xs-12" ng-if="container.state==='create'">
+                        <a href="" class=" col-xs-12 button bg-blue" ng-click="container.preparePostContainer()"><i class="fa fa-check"></i>Crea</a>
+                    </div>
+                    <div class="col-xs-12" ng-if="container.state==='edit' && container.activeTab==='MainData'" ng-click="container.preparePutMedia()">
+                        <a href="" class=" col-xs-12 button bg-blue"><i class="fa fa-check"></i>Salva</a>
+                    </div>
+                    <!--<div class="col-xs-12" ng-if="container.state==='edit'">
+<a ng-click="container.openHistory()" class="button col-xs-12" data-toggle="modal" data-target="#history" href=""><i class="fa fa-clock-o fa-fw pointer"></i>Storico</a>
+</div>-->
+                </div>
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 box-info" style="height:{{container.eleHeight.tabContentRight}}" ng-scrollbars>
+                <div id="maindata" class="dynamic-content" ng-show="container.activeTab=='MainData'">
+                    <form sf-schema="container.schemaForm.MainData.schema" sf-form="container.schemaForm.MainData.form" sf-model="container.media.MainData"></form>
+                </div>
+                <div id="containedMedia" ng-show="container.activeTab=='ContainedMedia'">
+                    <div class="dynamic-content">
+                        <div class="col-xs-12">
+                            <div class="box-linkedTitle margin-top">
+                                <div class="linkedTitle">
+                                    <h4>Media contenuti</h4>
+                                    <div class="btn-titleLeft" ng-click="container.openMediaPreview()">
+                                        <i class="fa fa-search"></i>
+                                        Vedi media
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-containedMedia">
+                                <dam-related-media action-edit="container.containedMediaActionEdit" templateoptions="container.damRelatedMediaTemplateOptions" set-draggable="true"></dam-related-media>
+                                <div class="box-btnContainedMedia">
+                                    <div class="item btnSearchMedia" ng-if="!container.damLoad" ng-click="container.toggleSearch('damSearch',container.damSearch)">
+                                        <div class="frame">
+                                            <div class="img">
+                                                <a class="square" href="">
+                                                    <div style="text-align:center">
+                                                        <i class="fa" ng-class="{'fa-plus':!container.damSearch, 'fa-search':container.damSearch}"></i><br />
+                                                        <span ng-if="!container.damSearch">Collega media</span>
+                                                        <span ng-if="container.damSearch">Chiudi ricerca</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item btnLoadMedia" ng-if="!container.damSearch" ng-click="container.toggleLoad(container.damLoad)">
+                                        <div class="frame">
+                                            <div class="img">
+                                                <a class="square" href="">
+                                                    <div style="text-align:center">
+                                                        <i class="fa" ng-class="{'fa-upload':!container.damLoad, 'fa-times':container.damLoad}"></i><br />
+                                                        <span ng-if="!container.damLoad">Carica media</span>
+                                                        <span ng-if="container.damLoad">Chiudi</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-searchMedia" ng-if="container.damSearch">
+                                <dam-search templateoptions="container.damSearchTemplateOptions"></dam-search>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="collection" ng-show="container.activeTab=='collection'">
+                    <div ng-if="container.getChildrenError.collection">{{container.getChildrenError.collection}}</div>
+                    <dam-collection-manager datainstance="collection" tree-config="container.treeConfig"></dam-collection-manager>
+                </div>
+                <div id="folder" ng-show="container.activeTab=='folder'">
+                    <div ng-if="container.getChildrenError.folder">{{container.getChildrenError.folder}}</div>
+                    <dam-collection-manager datainstance="folder" tree-config="container.treeConfig"></dam-collection-manager>
+                </div>
+                <div id="mediaCollegati" ng-show="container.activeTab=='mediaCollegati'">
+                    <div class="dynamic-content">
+                        <div class="col-xs-12">
+                            <div class="box-linkedTitle margin-top">
+                                <div class="linkedTitle">
+                                    <h4>Media collegati</h4>
+                                    <div class="btn-titleLeft" ng-click="container.openMediaPreview()">
+                                        <i class="fa fa-search"></i>
+                                        Vedi media
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-relatedMedia">
+                                <dam-related-media templateoptions="container.damRelatedMediaTemplateOptions" set-draggable="false"></dam-related-media>
+                                <div class="box-btnContainedMedia">
+                                    <div class="item btnSearchMedia" ng-click="container.toggleSearch('damSearchRel',container.damSearchRel)">
+                                        <div class="frame">
+                                            <div class="img">
+                                                <a class="square" href="">
+                                                    <div style="text-align:center">
+                                                        <i class="fa" ng-class="{'fa-plus':!details.damSearchRel, 'fa-search':details.damSearch}"></i><br />
+                                                        <span ng-if="!container.damSearchRel">Collega media</span>
+                                                        <span ng-if="container.damSearchRel">Chiudi ricerca</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-searchMedia" ng-if="container.damSearchRel">
+                                <dam-search templateoptions="container.damSearchTemplateOptions"></dam-search>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/ng-template" id="modal-confirm.html">
+        <div >
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="dz-success-mark"><i class="fa fa-check"></i></div>
+                        <div class="dz-success-content">Contenitore creato,</div>
+                        <div class="dz-success-content">vuoi collegare i media?</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-default btn-block" data-dismiss="modal" ng-click="closeModalConfirm()">No</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-danger btn-block" data-dismiss="modal" ng-click="closeModalConfirm(true)">Si, collega</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="modal-addMedia.html">
+        <div class="modal-body">
+            <iframe ng-src="{{iframeLoadMediaUrl}}" frameborder="0" width="100%" height="800px"></iframe>
+        </div>
+    </script>
+    <div ng-if="container.containedMediaPreview">
+        <dam-media-viewer medias="container.containedMediaPreview.medias" options="container.containedMediaPreview.options"></dam-media-viewer>
+    </div>
+    <div id="history" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-history">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Storico</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table-history table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Aggiornato da</th>
+                                        <th>Commento</th>
+                                        <th>Data modifica</th>
+                                        <th>Azioni</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if="container.objHistory.length===0">
+                                        <td colspan="4">Nessuno storico presente</td>
+                                    </tr>
+                                    <tr ng-repeat="row in container.objHistory">
+                                        <td>Mario Rossi</td>
+                                        <td>{{ row.comment }}</td>
+                                        <td>{{ row.modificationDate }}</td>
+                                        <td><input type="checkbox" ng-model="historyCheckbox[x.detailId].selected" ng-change="setHistory(x.id, x.detailId)"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default left bg-light-grey" data-dismiss="modal" ng-click="">Torna all'ultima versione</button>
+                    <button type="button" class="btn btn-default left bg-light-grey" data-dismiss="modal" ng-click="rollback()">Torna alla versione selezionata</button>
+                    <button type="button" class="btn btn-default bg-light-grey" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="copertina-template" style="display: none;" ng-model="preview">
+        <div class="dz-preview dz-file-preview">
+            <div class="dz-details">
+                <img data-dz-thumbnail />
+            </div>
+            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+            <div class="dz-success-mark"><i class="fa fa-check"></i></div>
+            <div class="dz-error-mark"><i class="fa fa-times-circle"></i></div>
+        </div>
+    </div>
+</div>

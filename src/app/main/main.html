@@ -1,0 +1,10 @@
+<div class="dam container-fluid {{main.activeState}}">
+    <menu-tab ng-if="main.initialized && !main.needsLogin() && !main.authorizationError"></menu-tab>
+    <div ng-if="main.authorizationError" class="authorizationError">
+        <h4>Errore di autenticazione</h4>
+        <p>Devi essere autenticato per accedere a queste risorse</p>
+    </div>
+    <div class="container-fluid" ng-if="!main.authorizationError">
+        <div ui-view></div>
+    </div>
+</div>

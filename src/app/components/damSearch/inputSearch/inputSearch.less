@@ -1,0 +1,178 @@
+.inputSearch {
+    .box-autocomplete {
+        position: absolute;
+        top: 33px;
+        max-width: 300px;
+        z-index: 100;
+        background: #FFF;
+        min-width: 200px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        max-height: 150px;
+        overflow-y: auto;
+        .value-autocomplete{
+            padding: 3px 5px;
+            border-bottom: 1px solid #f2f2f2;
+            font-size: 12px;
+            color:#777;
+            font-weight: 200;
+            &:hover{
+                background: #f2f2f2;
+                cursor: pointer;
+            }
+        }
+    }
+    .advancedSearchBoxContainer{
+        font-size: 15px;
+        .advancedSearchBox{
+            height: 34px;
+            min-height: 34px !important;
+            border-radius: 0px !important;
+            margin: 0px 134px 10px 0px !important;
+            padding: 0px;
+            padding-left:5px;
+            display: block !important;
+            @media screen and (max-width:865px){
+                margin: 0px 70px 10px 0px !important;
+            }
+            .content-box-parameters{
+                overflow-x: auto;
+                .mCSB_scrollTools.mCSB_scrollTools_horizontal {
+                    top: 31px;
+                }
+                .box-parameters{
+                    width: 180px;
+                }
+            }
+            .remove-all-icon {
+                padding: 10px 5px;
+            }
+            .search-parameter{
+                font-size: 1.1rem;
+                margin-top:0px;
+                padding-top:0px;
+                font-weight: 200;
+            }
+            input{
+                position: relative;
+                float: left;
+                height: 32px !important;
+                font-weight: 200;
+                font-size: 1.5rem;
+                line-height:20px;
+                &:focus{
+                    display: block;
+                }
+            }
+            div.search-parameter{
+                position: relative;
+                float: left;
+                margin: 5px 7px 0 0;
+                background: #ccc;
+                padding: 0 0 0 5px;
+                box-shadow: none;
+                .key{
+                    color: #000;
+                    text-transform: uppercase;
+                    font-size: 10px;
+                    line-height: 26px;
+                    font-weight: 400;
+                    padding-right: 3px;
+                }
+                .value {
+                    margin: 0;
+                    padding: 1px 4px 0px;
+                    height: 23px;
+                    background: #ddd;
+                    border-radius: 0px 5px 5px 0;
+                    span{
+                        color: #000;
+                        font-size: 13px;
+                    }
+                }
+                a[role=button]{
+                    position: relative;
+                    float: left;
+                }
+                .glyphicon-remove-circle{
+                    color: #000;
+                    font-size: 13px;
+                    line-height: 24px;
+                }
+            }
+            div.search-parameter-suggestions{
+                position: absolute;
+                top:33px;
+                left:0px;
+                right:0px;
+                background-color: #f0f0f0;
+                z-index: 100;
+                line-height: 29px;
+                text-align: right;
+                .title{
+                    font-weight:300;
+                    font-size:1.1rem;
+                    line-height:25px;
+                }
+            }
+        }
+        .advancedSearchBoxButtons{
+            padding-left: 0px;
+            padding-right: 0px;
+            cursor: pointer;
+            position: absolute;
+            top:0;
+            right: 0;
+            .button{
+                margin-top: 0px;
+                border:1px solid @gray4;
+                background: @gray3;
+                font-weight: 200;
+                letter-spacing: 0.05rem;
+                width: auto;
+                &.btn-search:hover{
+                    background-color: @blueHover !important;
+                }
+                &.btn-azzera:hover{
+                    background-color: @gray4;
+                }
+                .btn-label{
+                    @media screen and (max-width:865px){
+                        display: none;
+                    }
+                }
+                .btn-icon{
+                    display: none;
+                    @media screen and (max-width:865px){
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+    &.box-fixed{
+        .advancedSearchBox{
+            white-space: nowrap;
+            height: 53px;
+            border-right: none;
+            border-bottom: none;
+            .mCSB_scrollTools_horizontal{
+                top:25px !important;
+                z-index: 1000;
+            }
+            div.search-parameter-suggestions{
+                min-width: 100%;
+                right: initial;
+                display: block !important;
+                text-align: left;
+                padding-left: 5px;
+                left: -1px;
+                line-height: 28px;
+                padding-bottom: 2px;
+                .title{
+                    display:none;
+                }
+            }
+        }
+    }
+}

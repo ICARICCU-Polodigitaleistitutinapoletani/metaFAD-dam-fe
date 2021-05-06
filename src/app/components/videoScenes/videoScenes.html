@@ -1,0 +1,71 @@
+<div class="videoScenes">
+    <div class="row" ng-if="videoScenes.data.metadata">
+        <div class="videoScenes-mainContainer col-xs-6">
+            <div class="scenes-list-header">
+                <label>Lista scene</label>
+                
+                <ul class="nav nav-tabs availableViews-tabs" role="tablist" ng-if="videoScenes.availableViews">
+                    <li class="nav-item" ng-repeat="view in videoScenes.availableViews">
+                        <span class="nav-link" data-toggle="pill" 
+                            ng-class="{'active': videoScenes.currentView === view.id,
+                                        'show':  videoScenes.currentView === view.id
+                            }"
+                            role="tab" aria-controls="pills-item" aria-selected="true"
+                            ng-click="videoScenes.changeView(view.id)">{{view.label}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="scenes-list visual" ng-if="videoScenes.currentView === 'visual'">
+                <div>
+                    <div ng-repeat="scene in videoScenes.data.metadata" class="videoScenes-container row"
+                        ng-class="{'active': videoScenes.isActiveScene(scene, videoScenes.data.metadata[$index+1])}">
+                        <div class="col-xs-12 videoScenes-firstRow">
+                            <span class="videoScenes-startTime">
+                                <input ng-model="scene.start" class="form-control"  placeholder="Inserisci tempo di inizio"/>
+                            </span>
+                            <span class="videoScenes-endTime">
+                                <input ng-model="scene.end" class="form-control"  placeholder="Inserisci tempo di fine"/>
+                            </span>
+                            <select ng-model="scene.type" class="form-control videoScenes-typeSelector" 
+                                ng-options="type.id as (type.label) for type in videoScenes.sceneTypes"
+                                ng-change="videoScenes.updateData(scene)" placeholder="Tipologia"
+                                ng-class="{'empty': !scene.type}">
+                                <option value=''>-- Tipologia --</option>
+                            </select>
+                            <button class="btn btn-small btn-no-bg reset-wh p-0" title="Rimuovi scena"
+                                ng-click="videoScenes.removeScene($index)">
+                                <i class="fa fa-trash icon" aria-hidden="true"></i></button>
+                            <button class="btn btn-small btn-no-bg reset-wh p-0" title="Allinea video alla scena" 
+                                ng-disabled="!scene.start"
+                                ng-click="videoScenes.goToScene(scene)">
+                                <i class="fa fa-play-circle icon" aria-hidden="true"></i></button>
+                        </div>
+                        <span class="videoScenes-description col-xs-12" ng-if="scene.type === 'TEXT' || scene.type === 'SUBTITLE' || scene.type === 'string:TEXT' || scene.type === 'string:SUBTITLE'">
+                            <textarea rows="3" class="form-control" ng-model="scene.data"  placeholder="Inserisci testo"></textarea>
+                        </span>
+                    </div>
+                </div>
+                <div ng-if="videoScenes.data.metadata.length === 0"
+                    class="videoScenes-empty">
+                    Nessuna scena disponibile per questo video
+                </div>
+            </div>
+            <div class="scenes-list webVTT" ng-if="videoScenes.currentView === 'webVTT'">
+                <textarea class="form-control" rows="{{videoScenes.data.metadata.length * 6}}"
+                    ng-model="videoScenes.webVTT" ng-change="videoScenes.updateScenes()"></textarea>
+            </div>
+        </div>
+        <div class="videoScenes-player col-xs-6">
+            <video dam-video-player 
+                current-time="videoScenes.videoCurrentTime" 
+                time-to-set="videoScenes.videoSceneSelectedTime"
+                id="videoPlayer" ng-if="videoScenes.videoUrl" controls>
+                <source ng-src="{{videoScenes.videoUrl}}">
+            </video>
+            <button type="button" class="button bg-blue" ng-click="videoScenes.addScene()">
+                <i class="fa fa-plus icon" aria-hidden="true"></i>
+                Aggiungi scena
+            </button>
+        </div>
+    </div>
+</div>

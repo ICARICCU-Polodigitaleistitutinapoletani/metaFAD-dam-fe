@@ -1,0 +1,28 @@
+Modulo che permette di chiudere popover cliccando all'esterno dell'elemento mentre ne preserva l'apertura cliccando all'interno del popover. 
+La direttiva principale ("popover-custom-close") va aggiunta al body, mentre la direttiva "popover-elem" va aggiunta all'elemento che apre il popover. Inoltre bisogna aggiungere la classe "excludePopoverClose" a tutti gli elementi, presenti all'interno del template del popover, cliccando sui quali si vuole evitare che il popover si chiuda.
+Inoltre nel controller che ospita il popover vanno inserite le seguenti funzioni:
+    vm.popoverSetting = {
+        isOpen:false
+    };
+    $rootScope.$on("setPopoverState",function(event,state){
+        vm.popoverSetting.isOpen=state;
+    });
+        
+Esempio:
+
+<body popover-custom-close exclude-class="excludePopoverClose">
+    <a href="" class="button" popover-is-open="damSearch.popoverSetting.isOpen" popover-template="multipleDynamicPopover.templateUrl" popover-placement="bottom" popover-elem>
+        <i class="fa fa-caret-down fa-fw"></i>Azioni batch
+    </a>
+    <script type="text/ng-template" id="multipleDownloadPopoverTemplate.html">
+        <div class="batch-popover excludePopoverClose">
+            <div >
+                <input type="checkbox" class="excludePopoverClose">
+                <label for="">Elementi selezionati</label>
+            </div>
+            <div >
+                <input type="checkbox" class="excludePopoverClose">
+                <label for="">Pagina corrente</label>
+            </div>
+    </script>
+</body>

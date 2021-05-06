@@ -1,0 +1,16 @@
+<div class="damPagination" ng-if="damPagination.show && damPagination.totPage > 1">
+    <div class="box-pagination" ng-class="{'visible':damPagination.currentPage>1}" ng-click="damPagination.setPage(1)">
+        <i class="fa fa-angle-double-left"></i>
+    </div>
+    <div class="box-pagination" ng-class="{'visible':damPagination.currentPage>1}" ng-click="damPagination.setPage(damPagination.currentPage-1)">
+        <i class="fa fa-angle-left"></i>
+    </div>
+    <div class="box-pagination box-number visible">{{damPagination.currentPage}}</div>
+    <div class="box-totPage">di <span class="totPage">{{damPagination.totPage}}</span></div>
+    <div class="box-pagination" ng-class="{'visible':damPagination.currentPage<damPagination.totPage}" ng-click="damPagination.setPage(damPagination.currentPage+1)">
+        <i class="fa fa-angle-right"></i>
+    </div>
+    <div class="box-pagination" ng-class="{'visible':damPagination.currentPage<damPagination.totPage}" ng-click="damPagination.setPage(damPagination.totPage)">
+        <i class="fa fa-angle-double-right"></i>
+    </div>
+</div>

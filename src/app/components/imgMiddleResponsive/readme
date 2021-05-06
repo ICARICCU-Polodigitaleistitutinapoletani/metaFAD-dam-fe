@@ -1,0 +1,20 @@
+Direttiva per visualizzare un'immagine responsive con allineamento centrato sia verticale che orizzontale.
+I parametri da passare alla direttiva sono:
+- img-url: l'url dell'immagine da visualizzare
+- options: le dimensioni massime del contenitore, maxWidth e maxHeight
+- click-action: la funzione da eseguire all'ng-click
+
+Esempio:
+
+var url = "http://placehold.it/150x150";
+var imgMiddleRespOptions = {
+    container:{
+        maxWidth:"150px",
+        maxHeight:"150px"
+    }
+}
+var cliccato = function(){
+    alert('cliccato');
+}
+
+<img-middle-responsive img-url="{{url}} options="imgMiddleRespOptions" click-action="cliccato()"></img-middle-responsive>

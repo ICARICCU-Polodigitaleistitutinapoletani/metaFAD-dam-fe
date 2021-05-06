@@ -1,0 +1,14 @@
+<div class="damRelatedMedia">
+   <div class="box-frame" ng-class="{'draggable':doc.draggable}" data-id="{{doc.id}}" data-drag="damRelatedMedia.setDraggable" jqyoui-draggable="{onStop:'jqyouiDraggable.onStop()'}" data-jqyoui-options="damRelatedMedia.draggable.options" ng-repeat="doc in damRelatedMedia.docs track by $index">
+        <div class="frame" ng-mousedown="damRelatedMedia.detectMediaMouseDown($event,doc)" ng-click="damRelatedMedia.detectMultiDragClick($event,doc)" >
+            <div class="selectionMark" ng-if="doc.draggable"><i class="fa fa-check"></i></div>
+            <div class="img">
+                <img-middle-responsive default-url="{{damRelatedMedia.getDefaultUrl(doc.type)}}" img-url="{{doc.thumbnail}}" options="damRelatedMedia.imgMiddleRespOptions"></img-middle-responsive>
+                <div class="title semi-transparent-bottom pointer">{{ doc.title }}</div>
+            </div>
+        </div>
+        <div class="frame-icon remove-from-linked" ng-click="damRelatedMedia.removeItemSelected(doc)" role="button" tabindex="0"><i class="fa fa-trash fa-fw"></i></div>
+        <div ng-if="damRelatedMedia.actionEdit.show && doc.type!=='CONTAINER'" class="frame-icon edit-media" ng-click="damRelatedMedia.actionEditFunc('main.details',doc.id)"><i class="fa fa-edit fa-fw"></i></div>
+        <div ng-if="damRelatedMedia.actionEdit.show && doc.type==='CONTAINER'" class="frame-icon edit-media" ng-click="damRelatedMedia.actionEditFunc('main.container_edit',doc.id)"><i class="fa fa-edit fa-fw"></i></div>
+    </div><!-- .item -->
+</div>

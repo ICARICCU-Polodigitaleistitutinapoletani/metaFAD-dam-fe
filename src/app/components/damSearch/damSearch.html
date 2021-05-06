@@ -1,0 +1,111 @@
+<div id="damSearch" class="container-list col-xs-12" >
+    <div class="list-menu" style="padding:0;">
+        <div class="content-search" style="padding:0;margin-right:{{damSearch.getMarginContentSearch()}}px" ng-if="damSearch.templateoptions.inputSearch"  >
+            <input-search box-fixed="damSearch.templateoptions.inputFixed"></input-search>
+        </div>
+        <div class="searchbar-right" style="padding:0;">
+            <div ng-if="damSearch.templateoptions.listTemplate" class="list-selectors right" style="padding:0;">
+                <div class="button right pointer list-selector fg-grey bg-white light-on-active" data-list="list-details-2" ng-click="damSearch.setActiveList(2)" ng-class="{'active':damSearch.activeList===2}">
+                    <i class="fa fa-align-left fa-fw"></i><!-- .fa fa-th-list fa-fw -->
+                </div><!-- .button list-preview -->
+                <div class="button right pointer list-selector fg-grey bg-white light-on-active" data-list="list-details-1" ng-click="damSearch.setActiveList(1)" ng-class="{'active':damSearch.activeList===1}">
+                    <i class="fa fa-th-list fa-fw"></i><!-- .fa fa-th-list fa-fw -->
+                </div><!-- .button list-preview -->
+                <div class="button right pointer list-selector fg-grey bg-white light-on-active" data-list="list-simple" ng-click="damSearch.setActiveList(0)" ng-class="{'active':damSearch.activeList===0}">
+                    <i class="fa fa-th-large fa-fw"></i><!-- .fa fa-th-list fa-fw -->
+                </div><!-- .button list-preview -->
+            </div><!-- #list-selectors -->
+            <div ng-if="damSearch.templateoptions.sortedMenu" class="sort-selectors right" style="padding:0;">
+                <div class="button right pointer list-selector fg-grey bg-white light-on-active" ng-class="{'active':damSearch.activeSort==3}" ng-click="damSearch.sortResults(3)">
+                    <i class="fa fa-sort-numeric-desc fa-fw"></i><!-- .fa fa-th-list fa-fw -->
+                </div>
+                <div class="button right pointer list-selector fg-grey bg-white light-on-active" ng-class="{'active':damSearch.activeSort==2}" ng-click="damSearch.sortResults(2)">
+                    <i class="fa fa-sort-numeric-asc fa-fw"></i><!-- .fa fa-th-list fa-fw -->
+                </div>
+                <div class="button right pointer list-selector fg-grey bg-white light-on-active" ng-class="{'active':damSearch.activeSort==1}" ng-click="damSearch.sortResults(1)">
+                    <i class="fa fa-sort-alpha-desc fa-fw"></i><!-- .fa fa-th-list fa-fw -->
+                </div>
+                <div class="button right pointer list-selector fg-grey bg-white light-on-active" ng-class="{'active':damSearch.activeSort==0}" ng-click="damSearch.sortResults(0)">
+                    <i class="fa fa-sort-alpha-asc fa-fw"></i><!-- .fa fa-th-list fa-fw -->
+                </div>
+            </div><!-- #list-selectors -->
+            <div ng-if="damSearch.templateoptions.actionBatch" class="showBatchMenu right">
+                <a href="" class="button" uib-popover-template="damSearch.actionBatchPopover.templateUrl" popover-placement="bottom" popover-trigger="outsideClick">
+                    <i class="fa fa-caret-down fa-fw excludePopoverClose"></i>Azioni batch
+                </a>
+            </div>
+            <div class="button fg-white btn-search-similar bg-grey left" 
+                title="Ricerca immagini simili"
+                ng-if="damSearch.templateoptions.searchSimilar && damSearch.isSearchSimilarEnabled()"
+                ng-click="damSearch.triggerSearchSimilarImages()">
+                <i class="fa fa-camera fa-fw"></i>
+            </div>
+        </div>
+    </div>
+    <div class="box-request-error" ng-if="damSearch.requestError">
+        <h4>{{damSearch.requestError}}</h4>
+    </div>
+    <div id="list" ng-if="damSearch.templateoptions.listItems && !damSearch.requestError" style="height:{{damSearch.containerHeight}}">
+        <div class="list" ng-class="{
+            'has-pagination': damSearch.paginationVisible,
+            'has-item-selected': damSearch.getSelectedNum() > 0,
+            'is-scrollable-list': damSearch.activeList !== 0,
+            'no-margin':!damSearch.templateoptions.filterSearch, 
+            'scrollable':damSearch.templateoptions.scrollable}" 
+            ng-attr-ng-scrollbars="{{ damSearch.templateoptions.scrollable ? 'toggle' : 'notToggle' }}">
+            <list-items></list-items>
+        </div>
+        <div ng-if="damSearch.templateoptions.actionBatch && damSearch.getSelectedNum() > 0" class="selectedItems-info">
+            <span>Numero di elementi selezionati: <em>{{ damSearch.getSelectedNum() }}</em></span>
+            <span> – </span>
+            <span>Peso complessivo degli elementi selezionati: <em>{{ damSearch.getSelectedSize() | bytes}}</em> </span>
+        </div>
+        <dam-pagination></dam-pagination>
+    </div>
+    <div id="faccette" ng-if="damSearch.templateoptions.filterSearch" ng-class="{'scrollable':itemList.templateoptions.scrollable, 'with-input-fixed':damSearch.templateoptions.inputFixed}" style="height:{{damSearch.containerHeight}}" ng-attr-ng-scrollbars="{{ damSearch.templateoptions.scrollable ? 'toggle' : 'notToggle' }}">
+        <filter-search templateoptions="{'collectionManager':damSearch.templateoptions.collectionManager,'folderManager':damSearch.templateoptions.folderManager, 'facetGroupNum':damSearch.templateoptions.facetGroupNum}"></filter-search>
+    </div>
+</div>
+<script type="text/ng-template" id="actionBatchPopoverTemplate.html">
+    <div class="batch-popover excludePopoverClose">
+        <div class="upper">
+            <div class="col-xs-12 popover-header" style="font-weight:400 !important;padding-left:10px;padding-bottom:5px;font-size:13px;">Applica elaborazione a:</div>
+        <div class="col-xs-12 popover-option"><input type="radio" name="actiontBatch" value="selection" ng-model="damSearch.actionBatchActive" class="excludePopoverClose"><label for="">Elementi selezionati</label></div>
+        <div class="col-xs-12 popover-option"><input type="radio" name="actiontBatch" value="page" ng-model="damSearch.actionBatchActive" class="excludePopoverClose"><label for="">Pagina corrente</label></div>
+        <div class="col-xs-12 popover-option"><input type="radio" name="actiontBatch" value="searched" ng-model="damSearch.actionBatchActive" class="excludePopoverClose"><label for="">Tutti i risultati della ricerca</label></div>
+        </div>
+        <div class="row">
+            <div class="divider col-xs-11"></div>
+        </div>
+        <!--<div ng-show="!damSearch.batchError">
+            <div class="col-xs-12 popover-option excludePopoverClose"><a class="excludePopoverClose" href=""  data-toggle="modal" data-target="#convertBytestreamFormat"><label>Ridimensiona</label></a></div>
+            <div class="col-xs-12 popover-option excludePopoverClose"><a href="" class="excludePopoverClose" ng-click="damSearch.openBatch('crop')">Modifica</a></div>
+        </div>-->
+        <div ng-show="!damSearch.batchError">
+            <div class="col-xs-12 popover-option excludePopoverClose"><a class="excludePopoverClose" href=""  ng-click="damSearch.prepareOpenBatchModal('actionPanel')"><label>Modifica elementi</label></a></div>
+            <div class="col-xs-12 popover-option excludePopoverClose"><a class="excludePopoverClose" href=""  ng-click="damSearch.enableDeleteMediaMassive()"><label>Cancella elementi</label></a></div>
+            <div class="col-xs-12 popover-option excludePopoverClose" ng-if="damSearch.isMultiDownloadEnabled()">
+                <a class="excludePopoverClose" href=""  ng-click="damSearch.startMultiDownload()"><label>Download Massivo</label></a>
+            </div>
+            <!-- TODO: if enabled -->
+            <div class="col-xs-12 popover-option excludePopoverClose"> <!-- ng-if="damSearch.isMultiEditEnabled()" -->
+                <a class="excludePopoverClose" href=""  ng-click="damSearch.startMultiEdit()"><label>Modifica massiva metadati</label></a>
+            </div>
+        </div>
+        <div class="alert alert-info box-batch-error" ng-if="damSearch.batchError">
+            <b>Attenzione</b><br/>
+            {{damSearch.batchError}}
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="modal-actionBatch.html">
+    <div class="modal-header">
+        <button class="btn close" ng-click="closeModalConfirm()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Modifica media</h4>
+    </div>
+    <div class="modal-body" ng-class="{'modal-editor':actionBatchType==='actionEditor'}">
+        <dam-action-batch action-panel="true" action-editor="actionBatchType==='actionEditor'"></dam-action-batch>
+    </div>
+</script>

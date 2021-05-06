@@ -1,0 +1,67 @@
+<div class="details metadataMultiEdit" class="container-fluid">
+    <div class="row" style="margin-top:20px;">
+        <div class="col-xs-3 title-sezione">Modifica massiva metadati</div>
+        <div class="col-xs-9">
+            <ul class="tabs" id="tabs-datastream" ng-scrollbars
+                ng-scrollbars-config="metadataMultiEdit.tabsScrollbarsOptions">
+                <li class="tab pointer light-on-active" ng-repeat="(key,value) in metadataMultiEdit.tabs"
+                    ng-click="metadataMultiEdit.setActiveTab(key)"
+                    ng-class="{active:metadataMultiEdit.activeTab==value}">
+                    <a>{{ value.title || value.schema.title }}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="tab-content" class="container-fluid tab-content">
+        <div class="row">
+            <!-- SIDEBAR -->
+            <div class="col-xs-3 col-sm-2 col-md-2 right-box">
+                <div style="height:{{metadataMultiEdit.eleHeight.tabContentRight}}" ng-scrollbars>
+                    <div class="image-box multiEditing">
+                        <img-middle-responsive default-url="./img/multiEditing.png" img-url="./img/multiEditing.png"
+                            options="metadataMultiEdit.imgMiddleRespOptions"></img-middle-responsive>
+                    </div>
+
+                    <div class="box-stream">
+                        <div class="header-stream">
+                            <b>Selezionati {{ metadataMultiEdit.selectedMedias.length }} assets:</b>
+                        </div>
+                        <div class="filename" ng-repeat="media in metadataMultiEdit.selectedMedias">
+                            <div uib-tooltip="{{ metadataMultiEdit.getOriginalFileName(media) }}"
+                                tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-append-to-body="true">
+                                {{ metadataMultiEdit.getOriginalFileName(media) }}
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-btn-action"
+                    ng-if="metadataMultiEdit.activeTab!=='collection' && metadataMultiEdit.activeTab!=='folder' && metadataMultiEdit.activeTab!=='mediaCollegati'">
+                    <div class="col-xs-12 box-btn-saves">
+                        <a href="" ng-click="metadataMultiEdit.save()" class=" col-xs-12 button bg-blue btn-save">
+                            <i class="fa fa-check"></i>Salva</a>
+                        <a href="" ng-click="metadataMultiEdit.saveAndClose()"
+                            class=" col-xs-12 button bg-blue btn-save-close">
+                            <i class="fa fa-check"></i>Salva e chiudi</a>
+                        <a href="" ng-click="metadataMultiEdit.closeEditing()"
+                            class=" col-xs-12 button bg-blue btn-close">
+                            <i class="fa fa-times"></i>Chiudi</a>
+                    </div>
+                </div>
+            </div>
+            <!-- TAB CONTENT-->
+            <div class="col-xs-9 col-sm-10 col-md-10" style="height:{{metadataMultiEdit.eleHeight.tabContentLeft}}"
+                                ng-scrollbars>
+                                <div class="datastream"
+                                    ng-if="metadataMultiEdit.activeTab && metadataMultiEdit.activeSchema && metadataMultiEdit.activeForm">
+                                    <form sf-schema="metadataMultiEdit.activeSchema"
+                                        sf-form="metadataMultiEdit.activeForm"
+                                        sf-model="metadataMultiEdit.activeDataModel">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>

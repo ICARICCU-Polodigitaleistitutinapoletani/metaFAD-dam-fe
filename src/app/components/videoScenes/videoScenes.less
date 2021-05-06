@@ -1,0 +1,123 @@
+.videoScenes {
+    height: 100%;
+    overflow: hidden;
+    .row div {
+        height: auto;
+        &.videoScenes-mainContainer {
+            height: 100%;
+            .scenes-list {
+                overflow-y: auto;
+                overflow-x: hidden;
+                height: ~"calc(100% - 40px)";
+                &-header {
+                    height: 40px;
+                    .availableViews-tabs {
+                        float: right;
+                        li {
+                            margin-left: 20px;
+                        }
+                        span {
+                            padding-bottom: 5px;
+                            cursor: pointer;
+                            &:hover {
+                                opacity: .9;
+                            }
+                            &.active {
+                                cursor: default;
+                                border-bottom: 2px solid #0078CC;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .videoSceneAdd {
+        float: right;
+    }
+    &-firstRow {
+        button {
+            float: right;
+            border: none;
+            background: transparent;
+            font-size: 20px;
+            padding: 0 6px;
+            cursor: pointer;
+            &:hover * {
+                color: #0078CC;
+            }
+        }
+    }
+    &-container {
+        border-bottom: 1px solid #bbbbbb;
+        line-height: 1.3;
+        padding: 15px 15px 15px 0;
+        position: relative;
+        &:last-child {
+            border-bottom: none;
+        }
+        &.active {
+            background: #f2f2f2;
+        }
+    }
+    &-addContainer {
+        text-align: center;
+        padding: 10px 0 20px;
+    }
+    &-title {
+        margin-top: 5px;
+    }
+    &-description {
+        display: block;
+        font-weight: lighter;
+        margin-top: 5px;
+    }
+    &-startTime, &-endTime {
+        color: #bbbbbb;
+        font-size: 80%;
+        font-weight: lighter;
+        input {
+            width: auto;
+            display: inline-block;
+            margin-top: 4px;
+            margin-right: 4px;
+        }
+    }
+    &-typeSelector {
+        width: auto;
+        display: inline-block;
+        border-radius: 0 !important;
+        font-weight: lighter;
+        height: 31px;
+        vertical-align: bottom;
+        margin-left: 0;
+        margin-top: 4px;
+        padding: 0 12px 0 6px;
+        &.empty {
+            color: #bbbbbb;
+        }
+    }
+    &-player {
+        video {
+            width: 100%;
+        }
+    }
+    &-empty {
+        text-align: center;
+        margin-top: 3%;
+        font-weight: lighter;
+        color: #999;
+    }
+    &-status {
+        text-align: center;
+        margin-top: 3%;
+        font-weight: lighter;
+    }
+    &-statusPerc {
+        display: block;
+        margin-top: 10px;
+    }
+    textarea {
+        resize: vertical;
+    }
+}

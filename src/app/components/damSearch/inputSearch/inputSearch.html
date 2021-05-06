@@ -1,0 +1,8 @@
+<div class="inputSearch {{inputSearch.classFixed}}">
+    <div class="content-advSearBox"></div>
+    <div class="box-autocomplete" ng-if="inputSearch.valueAutocomplete">
+        <div class="value-autocomplete" ng-repeat="field in inputSearch.valueAutocomplete" ng-click="inputSearch.setFieldFromAutocomplete(field)">
+            {{field}}
+        </div>
+    </div>
+</div>

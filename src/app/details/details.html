@@ -1,0 +1,429 @@
+<div class="details" class="container-fluid">
+    <div class="tab-return" ng-if="details.fromContainer">
+        <div class="btn-return" ng-click="details.goToRouter('main.container_edit',{'id':details.fromContainer, 'activeTab':'ContainedMedia'})">
+            <i class="fa fa-angle-double-left"></i> Ritorna al contenitore
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+        <div class="col-xs-2 title-sezione">Modifica file</div>
+        <div class="col-xs-10">
+            <ul class="tabs" id="tabs-datastream" ng-scrollbars ng-scrollbars-config="details.tabsScrollbarsOptions">
+                <li class="tab pointer light-on-active" ng-click="details.setActiveTab('MainData')" ng-class="{active:details.activeTab==='MainData'}" ng-if="details.loadDatastream==='media'"><a>Metadati</a></li>
+                <li class="tab pointer light-on-active" ng-repeat="(key,value) in details.schemaForm.datastream[details.media.MainData.type]" ng-click="details.setActiveTab(key)" ng-class="{active:details.activeTab==key}" 
+                        ng-if="value.schema.associatedTo===details.loadDatastream"><a>{{ value.schema.title }}</a></li>
+                <li class="tab pointer light-on-active" ng-if="details.loadDatastream==='media'" ng-click="details.setActiveTab('folder')" ng-class="{active:details.activeTab=='folder'}"><i class="fa fa-folder-open"></i><a>Cartelle</a></li>
+                <li class="tab pointer light-on-active" ng-if="details.loadDatastream==='media'" ng-click="details.setActiveTab('collection')" ng-class="{active:details.activeTab=='collection'}"><i class="fa fa-th"></i><a>Collezioni</a></li>
+                <li class="tab pointer light-on-active" ng-if="details.loadDatastream==='media'" ng-click="details.setActiveTab('mediaCollegati')" ng-class="{active:details.activeTab=='mediaCollegati'}"><i class="fa fa-sitemap"></i><a>Media collegati</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="tab-content" class="container-fluid tab-content">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 right-box" style="height:{{details.eleHeight.tabContentRight}}" ng-scrollbars>
+                <div class="image-box">
+                    <img-middle-responsive default-url="./img/default_document.png" img-url="{{details.thumbnail}}" options="details.imgMiddleRespOptions"></img-middle-responsive>
+                </div>
+
+                <div class="box-stream" ng-show="details.activeTab!='mediaCollegati'">
+                    <div class="btn-datastream-media" ng-click="details.loadDatastreamMedia()" ng-if="details.bytestreamActive">Carica info media</div>
+                    <div class="header-stream">
+                        <b>Stream:</b>
+                        <i class="fa fa-refresh" ng-click="details.prepareGetBytestream()"></i>
+                    </div>
+                    <div class="filename" ng-class="{'active':stream.id && details.bytestreamActive.id===stream.id}" ng-repeat="stream in details.media.bytestream">
+                        <div uib-tooltip="{{ stream.name }}" tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-append-to-body="true" ng-click="details.loadDatastreamBytestream(stream)">{{ stream.name }}</div>
+                        <a ng-hide="!stream.id || (stream.name==='original' || stream.name==='thumbnail')" href="" ng-click="details.prepareRemoveBytestream(stream.id)"><i class="fa fa-trash-o fa-fw right"></i></a>
+                        <a ng-show="stream.id && (details.media.MainData.type==='IMAGE')" href="" ng-click="details.prepareOpenBatchModal(stream.name)"><i class="fa fa-pencil-square-o fa-fw right"></i></a>
+                        <a ng-show="!stream.id" href="" ><i class="fa fa-clock-o fa-fw right"></i></a>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div ng-show="details.activeTab=='mediaCollegati' && details.selectLinkedMedia == true">
+                    <b>Media collegati:</b><br/>
+                    <div class="filename" ng-repeat="mediaChild in mediaChilds">
+                        <div tooltip="{{ mediaChild.title_s }}" tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-append-to-body="true"><i class="fa fa-fw left" ng-class="{'fa-file-pdf-o':mediaChild.type_s == 'PDF','fa-file-video-o':mediaChild.type_s == 'VIDEO','fa-file-image-o':mediaChild.type_s == 'IMAGE','fa-file-o':mediaChild.type_s == 'OTHER'}"></i>{{ mediaChild.title_s }}</div>
+                        <a href="" ng-click="removeLinkedMedia(mediaChild)"><i class="fa fa-times-circle fa-fw right"></i></a>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="addStream" ng-show="activeTab!='mediaCollegati'">
+                    <a href="" tabindex="0" class="btn-stream-actions" uib-popover-template="details.addStream.templateUrl" popover-placement="right" popover-trigger="focus" popover-append-to-body="true"><i class="fa fa-plus-square"></i>aggiungi stream</a><br/>
+                    <a href="" class="btn-stream-actions" ng-click="details.openModalReplaceMedia()"><i class="fa fa-plus-square"></i>sostituisci media</a>
+                </div>
+                <div class="box-btn-action" ng-if="details.activeTab!=='collection' && details.activeTab!=='folder' && details.activeTab!=='mediaCollegati'">
+                    <div class="col-xs-12 box-btn-saves">
+                        <a href="" ng-click="details.preparePutMedia()" class=" col-xs-12 button bg-blue btn-save"><i class="fa fa-check"></i>Salva</a>
+                        <a href="" ng-click="details.preparePutMedia(true)" class=" col-xs-12 button bg-blue btn-save-close"><i class="fa fa-check"></i>Salva e chiudi</a>
+                        <a href="" ng-click="details.closeDetails()" class=" col-xs-12 button bg-blue btn-close"><i class="fa fa-times"></i>Chiudi</a>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="checkbox box-save-comment">
+                            <label>
+                                <input ng-model="details.datastreamComment.insert" type="checkbox"> Commenta il salvataggio
+                            </label>
+                        </div>
+                        <div ng-if="details.datastreamComment.insert" class="box-textarea-comment">
+                            <textarea class="form-control" rows="2" ng-model="details.datastreamComment.comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <a ng-click="details.openHistory()" class="button col-xs-12" data-toggle="modal" data-target="#history" href=""><i class="fa fa-clock-o fa-fw pointer"></i>Storico</a>
+                    </div>
+                    <div class="col-xs-12">
+                        <a ng-click="details.populateDownloadPopover()" href="" uib-popover-template="details.downloadPopover.templateUrl" popover-placement="right" popover-trigger="outsideClick" popover-append-to-body="true" popover-popup-delay="300" class="button col-xs-12"><i class="fa fa-arrow-circle-o-down fa-fw pointer"></i>Scarica</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10" ng-class="{'no-scroll': details.activeTab === 'VideoScenes'}"
+                style="height:{{details.eleHeight.tabContentRight}}" ng-scrollbars>
+                <div id="maindata" class="dynamic-content" ng-show="details.activeTab=='MainData'">
+                    <form sf-schema="details.schemaForm.MainData.schema" sf-form="details.schemaForm.MainData.form" 
+                        sf-model="details.media.MainData">
+                    </form>
+                </div>
+                <div class="datastream" ng-repeat="(key,value) in details.schemaForm.datastream[details.media.MainData.type]" 
+                    ng-show="details.activeTab==key" ng-switch="key">
+                    <div class="videoScenesContainer" ng-switch-when="VideoScenes">
+                        <div ng-if="details.media.datastream.VideoScenes">
+                            <div ng-if="!details.media.datastream.VideoScenes.request_id">
+                                <button type="button" class="btn btn-default bg-light-grey"
+                                    ng-click="details.launchVideoScenesRequest()">
+                                    Richiedi Scene
+                                </button>
+                            </div>
+                            <div ng-if="details.media.datastream.VideoScenes.request_id">
+                                <div ng-if="!details.videoScenesRequest.finished" class="videoScenes-status">
+                                    Elaborazione scene in corso...<br /><br />
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                </div>
+                                <div ng-if="details.videoScenesRequest.finished">
+                                    <div ng-if="details.videoScenesRequest.error !== true">
+                                        <video-scenes data="details.media.datastream.VideoScenes" video-url="details.videoUrl"></video-scenes>
+                                    </div>
+                                    <p ng-if="details.videoScenesRequest.error">
+                                        Si è verificato un errore nel caricamento dei dati. Riprovare oppure contattare i responsabili.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-default>
+                        <form sf-schema="details.schemaForm.datastream[details.media.MainData.type][key].schema" 
+                            sf-form="details.schemaForm.datastream[details.media.MainData.type][key].form" 
+                            sf-model="details.loadDatastream==='media' ? details.media.datastream[key] : details.bytestreamActive.datastream[key]"></form>
+                    </div>
+                </div>
+                <div id="collection" ng-show="details.activeTab=='collection'">
+                    <div ng-if="details.getChildrenError.collection">{{details.getChildrenError.collection}}</div>
+                    <dam-collection-manager datainstance="collection" tree-config="details.treeConfig"></dam-collection-manager>
+                </div>
+                <div id="folder" ng-show="details.activeTab=='folder'">
+                    <div ng-if="details.getChildrenError.folder">{{details.getChildrenError.folder}}</div>
+                    <dam-collection-manager datainstance="folder" tree-config="details.treeConfig"></dam-collection-manager>
+                </div>
+                <div id="mediaCollegati" ng-show="details.activeTab=='mediaCollegati'">
+                    <div>
+                        <dam-related-media templateoptions="details.damRelatedMediaTemplateOptions" set-draggable="false"></dam-related-media>
+                        <div class="item btnSearchMedia" ng-click="details.toggleSearch(details.damSearch)">
+                            <div class="frame">
+                                <div class="img">
+                                    <div class="dummy">
+                                    </div>
+                                    <a class="square" href="">
+                                        <div style="text-align:center">
+                                            <i class="fa" ng-class="{'fa-plus':!details.damSearch, 'fa-search':details.damSearch}"></i><br />
+                                            <span ng-if="!details.damSearch">Collega media</span>
+                                            <span ng-if="details.damSearch">Chiudi ricerca</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <dam-search ng-if="details.damSearch" templateoptions="details.damSearchTemplateOptions"></dam-search>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="history" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-history">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Storico</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table class="table-history table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Aggiornato da</th>
+                                    <th>Commento</th>
+                                    <th>Data modifica</th>
+                                    <th>Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="details.objHistory.length===0">
+                                    <td colspan="4">Nessuno storico presente</td>
+                                </tr>
+                                <tr ng-repeat="row in details.objHistory">
+                                    <td>Mario Rossi</td>
+                                    <td>{{ row.comment }}</td>
+                                    <td>{{ row.modificationDate }}</td>
+                                    <td><input type="radio" name="radioButtonHistory" ng-checked="false" ng-model="historySelected" ng-click="details.setHistory(row.id, row.detailId)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default left bg-light-grey" ng-click="details.rollback('last')">Torna all'ultima versione</button>
+                <button type="button" class="btn btn-default left bg-light-grey" ng-click="details.rollback('selected')">Torna alla versione selezionata</button>
+                <button type="button" class="btn btn-default bg-light-grey" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add stream popup - BEGIN -->
+<div id="addBytestream" class="modal fade add-stream-popup" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Aggiungi Stream</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="add-from-computer" ng-class="(hasOneCompleteElement) ? 'col-xs-9' : 'col-xs-12'">
+                            <form class="dropzone" ng-class="(hasOneCompleteElement) ? 'dropzone-not-empty' : ''" method="post" enctype="multipart/form-data" ng-dropzone dropzone="dropzone" dropzone-config="details.dropzoneConfig" ng-if="details.dropzoneConfig">
+                                <div class="dz-message" ng-show="!details.dropzoneHasOneBytestream">
+                                    <span>Trascina i file in quest'area</span>
+                                    <span class="note">oppure</span>
+                                    <span class="button button bg-blue">Seleziona i file</span>
+                                </div>
+                            </form>
+                            <div id="preview-template" style="display: none;" ng-model="preview">
+                                <div class="dz-preview dz-file-preview">
+                                    <div class="dz-details">
+                                        <img data-dz-thumbnail />
+                                    </div>
+                                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                                    <div class="dz-success-mark"><i class="fa fa-check"></i></div>
+                                    <div class="dz-error-mark"><i class="fa fa-times-circle"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-3"><input type="text" placeholder="Nome stream" ng-model="details.addedBytestreamName" ng-show="details.dropzoneHasOneBytestream"/></div>
+                <div class="col-xs-9">
+                    <a class="button bg-blue" href="" ng-click="details.prepareAddBytestream()">Salva</a>
+                    <a class="button" href="" data-dismiss="modal">Annulla</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add stream popup - END -->
+
+<!-- Format conversion popup - BEGIN -->
+<div id="newFormatModal" class="modal fade add-stream-popup" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Aggiungi Stream - Converti formato</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-12 optionRow"><div class="optionRowTitle">Nome stream</div><input placeholder="Nome stream" type="text" ng-model="newStreamName"/></div>
+                        <div class="col-xs-12 optionRow"><div class="optionRowTitle">Converti in</div>
+                            <div class="col-xs-5 button dropdownSelect fg-black bg-white align-left">
+                                <div ng-click="dropdownSetFormatSettings.active=toggle(dropdownSetFormatSettings.active);">
+                                    <span class="title fg-black">
+                                        {{dropdownSetFormat[activeSetFormatItem].label}}
+                                    </span>
+                                    <i class="fa fa-caret-down fa-fw right"></i>
+                                </div>
+                                <div class="dropdownSelectDropdown" ng-show="dropdownSetFormatSettings.active">
+                                    <ul>
+                                        <li ng-class="{'bg-blue fg-white':activeSetFormatItem==key}" ng-repeat="(key, setFormatItem) in dropdownSetFormat" ng-click="dropdownSetFormatSettings.active=0; $parent.activeSetFormatItem = key">
+                                            <span class="{'bg-blue fg-white':activeSetFormatItem==key,'bg-white fg-black:activeSetFormatItem!= key}">
+                                                {{setFormatItem.label}}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="mediaType == 'IMAGE'" class="col-xs-12 optionRow"><div class="optionRowTitle">Ridimensiona</div><input type="checkbox" ng-model="resizeCheckbox" /></div>
+                        <div ng-show="mediaType == 'IMAGE'" class="col-xs-12 optionRow" ng-init="resizeAspectRatio = false"><div class="optionRowTitle">Dimensione</div>
+                            <input type="number" ng-model="resizeWidth" placeholder="Width" ng-disabled="!resizeCheckbox"/>
+                            <input type="number" ng-model="resizeHeight" placeholder="Height" ng-disabled="!resizeCheckbox"/>
+                            <i class="fa" ng-class="{'fa-chain': resizeAspectRatio, 'fa-chain-broken': !resizeAspectRatio}" ng-click="resizeAspectRatio = !resizeAspectRatio"></i>
+                        </div>
+                        <div ng-show="mediaType == 'IMAGE'" class="col-xs-12 optionRow"><div class="optionRowTitle">DPI</div>
+                            <input type="number" ng-model="resizeDPI" placeholder="DPI" ng-disabled="!resizeCheckbox"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-9 col-xs-offset-3">
+                    <a class="button bg-blue" href="" data-dismiss="modal" ng-click="modifyBytestream()">Salva</a>
+                    <a class="button" href="" data-dismiss="modal">Chiudi</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Format conversion popup - END -->
+
+<!-- Image editing popup - BEGIN -->
+<script type="text/ng-template" id="editorModal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title">Aggiungi Stream - Modifica immagine</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div ng-include="'app/editor/editor.html'" ng-if="batchBytestreams"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- Image editing popup - END -->
+
+<script type="text/ng-template" id="modal-actionBatchDetails.html">
+    <div class="modal-header">
+        <button class="btn close" ng-click="closeModalConfirm()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Modifica media</h4>
+    </div>
+    <div class="modal-body modal-editor">
+        <dam-action-batch action-panel="true" action-editor="true"></dam-action-batch>
+    </div>
+</script>
+
+<script type="text/ng-template" id="addStreamTemplate.html">
+    <div class="addStreamPopover">
+        <a data-toggle="modal" data-target="#addBytestream">Aggiungi nuovo file</a>
+        <a ng-click="details.prepareOpenBatchModal('original',true)" ng-show="details.media.MainData.type === 'IMAGE'">Modifica immagine</a>
+    </div>
+</script>
+
+<script type="text/ng-template" id="detailsDownloadPopoverTemplate.html">
+    <dam-download-file doc="details.downloadPopover.doc" file-types="details.downloadPopover.fileTypes"></dam-download-file>
+</script>
+
+<!-- Auto Tag modal - BEGIN -->
+<script type="text/ng-template" id="modal-autoTag.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModalConfirm()">&times;</button>
+        <h4 class="modal-title">Taggatura automatica</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div ng-if="details.autoTagData && details.autoTagData.loaded">
+                    <!-- Ordered entities -->
+                    <div ng-repeat="entity in details.autoTagData.entities" class="row autoTag-entity"
+                        ng-click="details.toggleEntityTag(entity.label)">
+                        <div class="col-sm-10 autoTag-entity-checkbox">
+                            <input type="checkbox" class="form-control" 
+                                ng-checked="details.selectedAutoTags.indexOf(entity.label) > -1"/>
+                            <label>{{entity.label}} </label>
+                        </div>
+                        <div class="col-sm-2 autoTag-entity-score"> {{entity.score * 100 | number:2 }}% </div>
+                        <div class="col-sm-12 autoTag-entity-progress"><uib-progressbar value="entity.score" max="1"></uib-progressbar></div>
+                    </div>
+                    <!-- Unordered classes -->
+                    <div ng-repeat="entity in details.autoTagData.classes" class="row autoTag-entity"
+                        ng-click="details.toggleEntityTag(entity.label)">
+                        <div class="col-sm-10">
+                            <input type="checkbox" class="form-control" 
+                                ng-checked="details.selectedAutoTags.indexOf(entity.label) > -1"/>
+                            <label> {{entity.label}} </label>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="!details.autoTagData || !details.autoTagData.loaded" class="align-center">
+                    <br/><br/>Richiesta inviata. Recupero risultati in corso...<br/><br/><br/><br/>
+                    <i class="fa fa-spinner fa-pulse fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-12">
+            <a class="button bg-blue" href="" ng-if="details.autoTagData && details.autoTagData.loaded && details.autoTagData.entities && details.autoTagData.entities.length > 0"
+                ng-click="details.addAutoTags()">Inserisci</a>
+            <a class="button" href="" ng-click="details.closeAutoTags()">Annulla</a>
+        </div>
+    </div>
+</script>
+<!-- Auto Tag modal - END -->
+
+<!-- Replace media popup - BEGIN -->
+<script type="text/ng-template" id="modal-replaceMedia.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModalConfirm()">&times;</button>
+        <h4 class="modal-title">Sostituisci Media</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="add-from-computer" ng-class="(hasOneCompleteElement) ? 'col-xs-9' : 'col-xs-12'">
+                    <form class="dropzone" ng-class="(hasOneCompleteElement) ? 'dropzone-not-empty' : ''" method="post" enctype="multipart/form-data" ng-dropzone dropzone="dropzone" dropzone-config="details.dropzoneConfig" ng-if="details.dropzoneConfig">
+                        <div class="dz-message" ng-show="!details.dropzoneHasOneBytestream">
+                            <span>Trascina i file in quest'area</span>
+                            <span class="note">oppure</span>
+                            <span class="button button bg-blue">Seleziona i file</span>
+                        </div>
+                    </form>
+                    <div id="preview-template" style="display: none;" ng-model="preview">
+                        <div class="dz-preview dz-file-preview">
+                            <div class="dz-details">
+                                <img data-dz-thumbnail />
+                            </div>
+                            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                            <div class="dz-success-mark"><i class="fa fa-check"></i></div>
+                            <div class="dz-error-mark"><i class="fa fa-times-circle"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-12">
+            <a class="button bg-blue" href="" ng-click="details.prepareReplaceMedia()">Salva</a>
+            <a class="button" href="" ng-click="closeModalConfirm()">Annulla</a>
+        </div>
+    </div>
+</script>
+<!-- Replace media popup - END -->

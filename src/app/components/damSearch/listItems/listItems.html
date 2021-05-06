@@ -1,0 +1,166 @@
+<div class="listItems">
+<!--<div class="listItems" ng-class="{'inline':listItems.activeList==='template-list-simple'}">-->
+    <div class="{{listItems.activeList}}">
+        <div class="row box-table-header">
+            <div class="col-xs-12 table-header">
+                <div class="table-header-title col-xs-4">Titolo</div>
+                <div class="col-xs-1">Tipo</div>
+                <div class="col-xs-2">Gruppo</div>
+                <div class="table-header-date col-xs-5">Data di modifica</div>
+            </div>
+        </div>
+        <div class="box-search-error" ng-if="listItems.docs.length===0">
+            <h4>Nessun risultato disponibile</h4>
+        </div>
+        <div class="box-frame percentage" ng-class="listItems.checkMediaSelectedClass(doc.id)" ng-repeat="doc in listItems.docs track by $index">
+            <div class="box-frame-title" ng-if="!listItems.hideFrameTitle">
+                {{ doc.title.length > 100 ? doc.title.substr(0,100) + '...' : doc.title }}
+            </div>
+            <div class="frame" ng-mouseenter="listItems.setBoxHeight($event)">
+                <div class="box-action-list" >
+                    <div class="selectionMark"><i class="fa fa-check"></i></div>
+                    <div class="img" ng-class="{'col-xs-1':listItems.activeList!='template-list-simple'}" ng-click="listItems.selectItem(doc)">
+                        <img-middle-responsive default-url="img/default_document.png" img-url="{{doc.thumbnail}}" options="listItems.imgMiddleRespOptions"></img-middle-responsive>
+                        <div class="box-action semi-transparent" ng-if="listItems.actionSelected==='aggiungi'">
+                            <i class="fa fa-plus"></i><br />
+                            <span>Aggiungi media</span>
+                        </div>
+                    </div>
+                    <div class="box-frame-icon" ng-hide="listItems.cms">
+                        <div class="frame-icon connected-media-icon" ng-if="doc.type==='CONTAINER'" ng-click="listItems.goToRouter('main.container_edit',{id:doc.id,activeTab:'ContainedMedia'})" uib-tooltip="Vedi i media contenuti" tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-append-to-body="true">
+                            <i class="fa fa-inbox fa-fw"></i>
+                        </div>
+                        <div class="frame-icon connected-media-icon" ng-if="doc.RelatedMedia" ng-click="listItems.goToRouter(doc.type==='CONTAINER' ? 'main.container_edit' : 'main.details',{id:doc.id,activeTab:'mediaCollegati'})" uib-tooltip="Vedi i media collegati" tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-append-to-body="true">
+                            <i class="fa fa-sitemap fa-fw"></i>
+                        </div>
+                        <div class="frame-icon active-jobs-icon" ng-if="doc.bytestream_batch"><i class="fa fa-tasks fa-fw"></i></div>
+                    </div>
+                    <div class="box-frame-icon" ng-show="listItems.cms">
+                        <div class="frame-icon connected-media-icon" ng-if="doc.type==='CONTAINER'">
+                            <i class="fa fa-inbox fa-fw"></i>
+                        </div>
+                    </div>
+                    <table class="box-over" style="height:{{listItems.frameHeight}}" ng-if="!listItems.actionSelected || listItems.actionSelected==='none' || listItems.actionSelected==='selected'">
+                        <tr class="box-over-tr">
+                            <td class="box-title" ng-click="listItems.selectItem(doc)">
+                                <div class="title transition-03 semi-transparent pointer">{{ doc.title.length > 100 ? doc.title.substr(0,100) + '...' : doc.title }}</div>
+                            </td>
+                            <td class="buttons-right transition-03 semi-transparent">
+                                <ul>
+                                    <li>
+                                        <a class="athumb" href="" 
+                                        ng-click="listItems.prepareOpenModalPreview(doc)">
+                                        <i class="icon-fullscreen fa fa-arrows fa-fw pointer"></i></a></li>
+                                    <li ng-if="doc.type==='IMAGE'">
+                                        <a class="athumb" tabindex="0" 
+                                            uib-popover-template="listItems.previewPopover.templateUrl" 
+                                            popover-placement="auto right-top"
+                                            popover-trigger="outsideClick" 
+                                            popover-class="previewPopover"
+                                            popover-append-to-body="true"
+                                            title="Anteprima">
+                                            <i class="fa fa-search fa-fw pointer"></i>
+                                        </a>
+                                    </li>
+                                    <li ng-if="doc.type==='IMAGE' && listItems.isSearchSimilarEnabled()"><!-- Search similar -->
+                                        <a class="athumb" tabindex="0" 
+                                            title="Ricerca immagini simili"
+                                            ng-click="listItems.searchSimilarImages(doc.id)">
+                                            <i class="fa fa-camera fa-fw pointer"></i>
+                                        </a>
+                                    </li>
+                                    <li ng-click="listItems.populateDownloadPopover(doc)" ng-if="doc.type!=='CONTAINER'">
+                                        <a uib-popover-template="listItems.downloadPopover.templateUrl" 
+                                            popover-placement="auto bottom" 
+                                            popover-trigger="outsideClick" 
+                                            popover-append-to-body="true" 
+                                            popover-popup-delay="500"
+                                            class="btn-popover-download"
+                                            title="Download">
+                                            <i class="fa fa-arrow-circle-o-down fa-fw pointer"></i>
+                                        </a>
+                                    </li>
+                                    <li >
+                                        <a ng-if="doc.type!='CONTAINER'" title="Modifica metadati" ng-click="listItems.goToRouter('main.details',{id:doc.id})"><i class="fa fa-pencil-square-o fa-fw pointer"></i></a>
+                                        <a ng-if="doc.type=='CONTAINER'" title="Modifica metadati" ng-click="listItems.goToRouter('main.container_edit',{id:doc.id})"><i class="fa fa-pencil-square-o fa-fw pointer"></i></a>
+                                    </li>
+                                    <li ng-hide="listItems.cms">
+                                        <a ng-if="doc.type==='IMAGE'" title="Modifica immagine"
+                                            ng-click="listItems.openBatchEditor(doc)">
+                                        <i class="fa fa-crop fa-fw pointer"></i></a>
+                                    </li>
+                                    <li class="remove">
+                                        <a ng-if="doc.type!='CONTAINER'" title="Elimina" ng-click="listItems.prepareRemoveMedia('media',doc.id)"><i class="fa fa-trash-o fa-fw pointer"></i></a>
+                                        <a ng-if="doc.type=='CONTAINER'" ng-click="listItems.prepareRemoveMedia('container',doc.id)"><i class="fa fa-trash-o fa-fw pointer"></i></a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="box-details">
+                        <div class="doc-data" ng-class="{'col-xs-4':listItems.activeList=='template-list-details-2', 'col-xs-12':listItems.activeList=='template-list-details-1'}">
+                            <h3>{{ doc.title }}</h3>
+                        </div>
+                        <div class="file-format" ng-class="{'col-xs-1':listItems.activeList=='template-list-details-2', 'col-xs-3':listItems.activeList=='template-list-details-1'}">
+                            <span ng-if="doc.type!='CONTAINER'">.{{ doc.file_extension }}</span>
+                            <span ng-if="doc.type=='CONTAINER'">Cont.</span>
+                        </div>
+                        <div class="box-groups template-list-details-2-collections col-xs-2" ng-if="listItems.activeList==='template-list-details-2'">
+                            <div class="box-group" ng-if="doc.folder">Cartella: <div class="title">{{doc.folder}}</div></div>
+                            <div class="box-group" ng-if="doc.collection">
+                                Collezioni: <div class="title" ng-repeat="collection in doc.collection">{{collection}}</div>
+                            </div>
+                        </div><!-- .collections -->
+                        <div class="info-separator" ng-class="{'col-xs-5':listItems.activeList=='template-list-details-2', 'col-xs-9':listItems.activeList=='template-list-details-1'}">
+                            <span><i class="fa fa-info-circle fa-fw"></i>{{doc.datastream_num}}</span><span><i class="fa fa-file-o fa-fw"></i>{{doc.bytestream_num}}</span><span><i class="fa fa-calendar-o fa-fw"></i>{{doc.date | normalizeData}}</span>
+                        </div>
+                        <div class="box-groups template-list-details-1-collections col-xs-12" ng-if="listItems.activeList==='template-list-details-1'">
+                            <div class="box-group" ng-if="doc.folder">Cartella: <div class="title">{{doc.folder}}</div></div>
+                            <div class="box-group" ng-if="doc.collection">
+                                Collezioni: <div class="title" ng-repeat="collection in doc.collection">{{collection}}</div>
+                            </div>
+                        </div><!-- .collections -->
+                    </div>
+                </div>
+            </div>
+            
+        </div><!-- .item -->
+    </div>
+    <div ng-if="listItems.modalPreview">
+        <dam-media-viewer medias="listItems.modalPreview.medias" options="listItems.modalPreview.options"></dam-media-viewer>
+    </div>
+</div>
+<script type="text/ng-template" id="listItemsDownloadPopoverTemplate.html">
+    <dam-download-file doc="listItems.downloadPopover.doc" file-types="listItems.downloadPopover.fileTypes"></dam-download-file>
+</script>
+<script type="text/ng-template" id="listItemsPreviewPopoverTemplate.html">
+    <div class="contentMediaPreview">
+        <img ng-src="{{listItems.getMediaPreview($parent.doc)}}" />
+    </div>
+</script>
+
+<script type="text/ng-template" id="modal-containerMedia.html">
+    <div class="modal-header">
+        Seleziona i media del contenitore
+    </div>
+    <div class="modal-body modal-body-containerMedia">
+        <div class="box-search-error" ng-if="containedMedia.length===0">
+            <h4>{{msgToUser}}</h4>
+        </div>
+        <div class="box-frame box-frame-containerMedia" ng-repeat="doc in containedMedia track by $index" ng-class="checkMediaSelectedClass(doc.id)" ng-click="selectItem(doc)">
+            <div class="frame">
+                <div class="box-action-list" >
+                    <div class="selectionMark"><i class="fa fa-check"></i></div>
+                    <div class="img">
+                        <img-middle-responsive default-url="{{getDefaultUrl(doc.type)}}" img-url="{{doc.thumbnail}}" options="imgMiddleRespOptions"></img-middle-responsive>
+                        <div class="title semi-transparent-bottom pointer">{{ doc.title }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="btn btn-default bg-grey" ng-click="cancelSelection()">Annulla</div>
+        <div class="btn btn-primary bg-blue" ng-click="insertSelection()">{{cms ? "Inserisci" : "Seleziona"}}</div>
+    </div>
+</script>

@@ -1,0 +1,753 @@
+{
+    "MainData": {
+        "title": "Metadati",
+        "schema": {
+            "type": "object",
+            "title": "Descrizione",
+            "watchFormChanges": "true",
+            "properties": {
+                "title": {
+                    "title": "Titolo",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "searchable": true,
+                        "solrField": "title_s_lower"
+                    }
+                },
+                "argument": {
+                    "key": "argument",
+                    "title": "Argomento",
+                    "type": "array",
+                    "meta": {
+                        "modelType": "array",
+                        "searchable": true,
+                        "solrField": "arguments_ss_lower"
+                    },
+                    "format": "uiselect",
+                    "mapFuncTagging": "MainData.form.0.items.0.items.1.options",
+                    "mapFuncCallback": "MainData.form.0.items.0.items.1.options",
+                    "autocomplete": "arguments_ss_lower",
+                    "tagging": true,
+                    "items": []
+                },
+                "isbn": {
+                    "key": "isbn",
+                    "title": "ISBN",
+                    "type": "array",
+                    "meta": {
+                        "modelType": "array",
+                        "searchable": true,
+                        "solrField": "isbn_ss_lower"
+                    },
+                    "format": "uiselect",
+                    "mapFuncTagging": "MainData.form.0.items.0.items.2.options",
+                    "mapFuncCallback": "MainData.form.0.items.0.items.2.options",
+                    "autocomplete": "isbn_ss_lower",
+                    "tagging": true,
+                    "items": []
+                },
+                "isbn_cdi": {
+                    "key": "isbn_cdi",
+                    "title": "ISBN CDI",
+                    "type": "array",
+                    "meta": {
+                        "modelType": "array",
+                        "searchable": true,
+                        "solrField": "isbn_cdi_ss_lower"
+                    },
+                    "format": "uiselect",
+                    "mapFuncTagging": "MainData.form.0.items.0.items.3.options",
+                    "mapFuncCallback": "MainData.form.0.items.0.items.3.options",
+                    "autocomplete": "isbn_cdi_ss_lower",
+                    "tagging": true,
+                    "items": []
+                },
+                "tag": {
+                    "key": "tag",
+                    "title": "Tags",
+                    "type": "array",
+                    "meta": {
+                        "modelType": "array"
+                    },
+                    "format": "uiselect",
+                    "autocomplete": "tags_ss_lower",
+                    "tagging": true,
+                    "mapFuncTagging": "MainData.form.0.items.0.items.4.options",
+                    "mapFuncCallback": "MainData.form.0.items.0.items.4.options",
+                    "items": []
+                },
+                "duration": {
+                    "title": "Durata multimediale",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "duration_s_lower",
+                        "searchable": true
+                    }
+                },
+                "policy": {
+                    "key": "policy",
+                    "title": "Policy",
+                    "type": "array",
+                    "tagging": true,
+                    "mapFuncTagging": "MainData.form.0.items.0.items.6.items.0.options",
+                    "meta": {
+                        "modelType": "array",
+                        "solrField": "policy_ss_lower",
+                        "facet": true,
+                        "exportField": true
+                    },
+                    "format": "uiselect",
+                    "items": [
+                        {
+                            "value": "Contenuto docente",
+                            "label": "Contenuto docente"
+                        },
+                        {
+                            "value": "Contenuto studente",
+                            "label": "Contenuto studente"
+                        },
+                        {
+                            "value": "Contenuto plus",
+                            "label": "Contenuto plus"
+                        }
+                    ]
+                },
+                "additionalContentType": {
+                    "title": "Contenuto aggiuntivo",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "additionalContentType_s_lower",
+                        "facet": true
+                    }
+                },
+                "target": {
+                    "title": "Target",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "target_s_lower",
+                        "facet": true
+                    }
+                },
+                "typology": {
+                    "title": "Tipologia",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "typology_s_lower",
+                        "facet": true,
+                        "exportField": true
+                    }
+                }
+            }
+        },
+        "form": [
+            {
+                "type": "section",
+                "htmlClass": "row",
+                "items": [
+                    {
+                        "type": "section",
+                        "htmlClass": "col-xs-12",
+                        "items": [
+                            "title",
+                            {
+                                "key": "argument",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "taggingLabel": " ",
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            {
+                                "key": "isbn",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "taggingLabel": " ",
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            {
+                                "key": "isbn_cdi",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "taggingLabel": " ",
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            {
+                                "key": "tag",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            "duration",
+                            {
+                                "key": "policy",
+                                "feedback": false,
+                                "placeholder": " ",
+                                "options": {
+                                    "taggingLabel": " ",
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            {
+                                "key": "additionalContentType",
+                                "type": "select",
+                                "titleMap": [
+                                    {
+                                        "value": "",
+                                        "name": "-"
+                                    },
+                                    {
+                                        "value": "minisito",
+                                        "name": "Minisito"
+                                    },
+                                    {
+                                        "value": "digitest",
+                                        "name": "DigiTest"
+                                    },
+                                    {
+                                        "value": "xbook",
+                                        "name": "Fai Da Te - Xbook"
+                                    },
+                                    {
+                                        "value": "xengage",
+                                        "name": "Fai Da Te - Xengage"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "target",
+                                "type": "select",
+                                "titleMap": [
+                                    {
+                                        "value": "primaria",
+                                        "name": "Primaria"
+                                    },
+                                    {
+                                        "value": "ss1",
+                                        "name": "SS1"
+                                    },
+                                    {
+                                        "value": "ss2",
+                                        "name": "SS2"
+                                    },
+                                    {
+                                        "value": "universit\u00e0",
+                                        "name": "Universit\u00e0"
+                                    },
+                                    {
+                                        "value": "l2",
+                                        "name": "L2"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "typology",
+                                "type": "select",
+                                "titleMap": [
+                                    {
+                                        "value": "App",
+                                        "name": "App"
+                                    },
+                                    {
+                                        "value": "Atlante",
+                                        "name": "Atlante"
+                                    },
+                                    {
+                                        "value": "Audio",
+                                        "name": "Audio"
+                                    },
+                                    {
+                                        "value": "Biblioteca",
+                                        "name": "Biblioteca"
+                                    },
+                                    {
+                                        "value": "Cinema",
+                                        "name": "Cinema"
+                                    },
+                                    {
+                                        "value": "Documento",
+                                        "name": "Documento"
+                                    },
+                                    {
+                                        "value": "Esercizio commentato",
+                                        "name": "Esercizio commentato"
+                                    },
+                                    {
+                                        "value": "Flashcard",
+                                        "name": "Flashcard"
+                                    },
+                                    {
+                                        "value": "Gallery",
+                                        "name": "Gallery"
+                                    },
+                                    {
+                                        "value": "Glossario",
+                                        "name": "Glossario"
+                                    },
+                                    {
+                                        "value": "Infografica",
+                                        "name": "Infografica"
+                                    },
+                                    {
+                                        "value": "Karaoke",
+                                        "name": "Karaoke"
+                                    },
+                                    {
+                                        "value": "Laboratorio",
+                                        "name": "Laboratorio"
+                                    },
+                                    {
+                                        "value": "Lezione",
+                                        "name": "Lezione"
+                                    },
+                                    {
+                                        "value": "Linea tempo",
+                                        "name": "Linea tempo"
+                                    },
+                                    {
+                                        "value": "Mappa",
+                                        "name": "Mappa"
+                                    },
+                                    {
+                                        "value": "Speaker di testo",
+                                        "name": "Speaker di testo"
+                                    },
+                                    {
+                                        "value": "Test",
+                                        "name": "Test"
+                                    },
+                                    {
+                                        "value": "Tutorial",
+                                        "name": "Tutorial"
+                                    },
+                                    {
+                                        "value": "Verifica",
+                                        "name": "Verifica"
+                                    },
+                                    {
+                                        "value": "Video",
+                                        "name": "Video"
+                                    },
+                                    {
+                                        "value": "------------------------",
+                                        "name": "------------------------ RE pre 2018"
+                                    },
+                                    {
+                                        "value": "Audio",
+                                        "name": "Audio"
+                                    },
+                                    {
+                                        "value": "Competenze",
+                                        "name": "Competenze"
+                                    },
+                                    {
+                                        "value": "Contenuti multipli",
+                                        "name": "Contenuti multipli"
+                                    },
+                                    {
+                                        "value": "Contenuto integrativo",
+                                        "name": "Contenuto integrativo"
+                                    },
+                                    {
+                                        "value": "Didattica inclusiva",
+                                        "name": "Didattica inclusiva"
+                                    },
+                                    {
+                                        "value": "Documento",
+                                        "name": "Documento"
+                                    },
+                                    {
+                                        "value": "Esercizio interattivo",
+                                        "name": "Esercizio interattivo"
+                                    },
+                                    {
+                                        "value": "Gallery fotografica",
+                                        "name": "Gallery fotografica"
+                                    },
+                                    {
+                                        "value": "Ingrandimento",
+                                        "name": "Ingrandimento"
+                                    },
+                                    {
+                                        "value": "PROF",
+                                        "name": "PROF"
+                                    },
+                                    {
+                                        "value": "Proposta operativa",
+                                        "name": "Proposta operativa"
+                                    },
+                                    {
+                                        "value": "Video",
+                                        "name": "Video"
+                                    },
+                                    {
+                                        "value": "------------------------",
+                                        "name": "------------------------ RE pre 2018"
+                                    },
+                                    {
+                                        "value": "Ascolta",
+                                        "name": "Ascolta"
+                                    },
+                                    {
+                                        "value": "Guarda",
+                                        "name": "Guarda"
+                                    },
+                                    {
+                                        "value": "Mi collego",
+                                        "name": "Mi collego"
+                                    },
+                                    {
+                                        "value": "Note",
+                                        "name": "Note"
+                                    },
+                                    {
+                                        "value": "Per capire",
+                                        "name": "Per capire"
+                                    },
+                                    {
+                                        "value": "PROF",
+                                        "name": "PROF"
+                                    },
+                                    {
+                                        "value": "Scopri",
+                                        "name": "Scopri"
+                                    },
+                                    {
+                                        "value": "Tocca a te",
+                                        "name": "Tocca a te"
+                                    },
+                                    {
+                                        "value": "Un aiuto in pi\u00f9",
+                                        "name": "Un aiuto in pi\u00f9"
+                                    },
+                                    {
+                                        "value": "Un aiuto in pi\u00f9 Mate",
+                                        "name": "Un aiuto in pi\u00f9 Mate"
+                                    }
+                                ]
+                            }
+                        ],
+                        "tagFields": [
+                            {
+                                "index": 1,
+                                "key": "argument"
+                            },
+                            {
+                                "index": 2,
+                                "key": "isbn"
+                            },
+                            {
+                                "index": 3,
+                                "key": "isbn_cdi"
+                            },
+                            {
+                                "index": 4,
+                                "key": "tag"
+                            },
+                            {
+                                "index": 6,
+                                "key": "policy"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Creation": {
+        "schema": {
+            "type": "object",
+            "title": "Creazione",
+            "associatedTo": "media",
+            "properties": {
+                "agency": {
+                    "key": "agency",
+                    "title": "Agenzia fotografica",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "agency_s_lower",
+                        "facet": true
+                    },
+                    "format": "uiselect",
+                    "autocomplete": "agency_s_lower",
+                    "mapFuncCallback": "Creation.form.0.items.0.items.0.options",
+                    "mapFuncTagging": "Creation.form.0.items.0.items.0.options",
+                    "tagging": "string",
+                    "items": []
+                },
+                "supplier": {
+                    "key": "supplier",
+                    "title": "Fornitore",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "supplier_s_lower",
+                        "facet": true
+                    },
+                    "format": "uiselect",
+                    "autocomplete": "supplier_s_lower",
+                    "mapFuncCallback": "Creation.form.0.items.0.items.1.options",
+                    "mapFuncTagging": "Creation.form.0.items.0.items.1.options",
+                    "tagging": "string",
+                    "items": []
+                },
+                "link": {
+                    "title": "Link archivio file sorgenti",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string"
+                    }
+                },
+                "technology": {
+                    "key": "technology",
+                    "title": "Tecnologia",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "technology_s_lower",
+                        "facet": true
+                    },
+                    "format": "uiselect",
+                    "autocomplete": "technology_s_lower",
+                    "mapFuncCallback": "Creation.form.0.items.0.items.3.options",
+                    "mapFuncTagging": "Creation.form.0.items.0.items.3.options",
+                    "tagging": "string",
+                    "items": []
+                },
+                "year": {
+                    "title": "Anno",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "year_s_lower",
+                        "searchable": true
+                    }
+                },
+                "news_story": {
+                    "title": "Notizie generiche su Storia",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string"
+                    },
+                    "x-schema-form": {
+                        "type": "textarea",
+                        "placeholder": ""
+                    }
+                }
+            }
+        },
+        "form": [
+            {
+                "type": "section",
+                "htmlClass": "row",
+                "items": [
+                    {
+                        "type": "section",
+                        "htmlClass": "col-xs-12",
+                        "items": [
+                            {
+                                "key": "agency",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "taggingLabel": " ",
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            {
+                                "key": "supplier",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "taggingLabel": " ",
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            "link",
+                            {
+                                "key": "technology",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "taggingLabel": " ",
+                                    "taggingToken": "SPACE|ENTER|,",
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            "year",
+                            "news_story"
+                        ]
+                    }
+                ],
+                "tagFields": [
+                    {
+                        "index": 0,
+                        "key": "agency"
+                    },
+                    {
+                        "index": 1,
+                        "key": "supplier"
+                    },
+                    {
+                        "index": 3,
+                        "key": "technology"
+                    }
+                ]
+            }
+        ]
+    },
+    "Right": {
+        "schema": {
+            "type": "object",
+            "title": "Diritti",
+            "associatedTo": "media",
+            "properties": {
+                "author_name": {
+                    "key": "author_name",
+                    "title": "Nome autore",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "author_name_s_lower",
+                        "facet": true
+                    },
+                    "format": "uiselect",
+                    "autocomplete": "author_name_s_lower",
+                    "mapFuncCallback": "Right.form.0.items.0.items.0.options",
+                    "mapFuncTagging": "Right.form.0.items.0.items.0.options",
+                    "tagging": "string",
+                    "items": []
+                },
+                "author_description": {
+                    "title": "Descrizione autore",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "text"
+                    },
+                    "x-schema-form": {
+                        "type": "textarea",
+                        "placeholder": ""
+                    }
+                },
+                "copyright_state": {
+                    "title": "Stato del Copyright",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string",
+                        "solrField": "copyright_state_s_lower",
+                        "facet": true
+                    }
+                },
+                "date_start": {
+                    "title": "Data inizio",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "date"
+                    },
+                    "format": "date"
+                },
+                "date_end": {
+                    "title": "Data fine",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "date"
+                    },
+                    "format": "date"
+                },
+                "copyright_note": {
+                    "title": "Note generiche sul copyright",
+                    "type": "string",
+                    "meta": {
+                        "modelType": "string"
+                    },
+                    "x-schema-form": {
+                        "type": "textarea",
+                        "placeholder": ""
+                    }
+                }
+            },
+            "required": []
+        },
+        "form": [
+            {
+                "type": "section",
+                "htmlClass": "row",
+                "items": [
+                    {
+                        "type": "section",
+                        "htmlClass": "col-xs-12",
+                        "items": [
+                            {
+                                "key": "author_name",
+                                "placeholder": " ",
+                                "disableSuccessState": true,
+                                "feedback": false,
+                                "options": {
+                                    "uiClass": "uiselect"
+                                }
+                            },
+                            "author_description",
+                            {
+                                "key": "copyright_state",
+                                "type": "select",
+                                "titleMap": [
+                                    {
+                                        "value": "Dominio pubblico",
+                                        "name": "Dominio pubblico"
+                                    },
+                                    {
+                                        "value": "Coperto da Copyright",
+                                        "name": "Coperto da Copyright"
+                                    },
+                                    {
+                                        "value": "Proprietario ME",
+                                        "name": "Proprietario ME"
+                                    },
+                                    {
+                                        "value": "Sotto licenza",
+                                        "name": "Sotto licenza"
+                                    }
+                                ]
+                            },
+                            "date_start",
+                            "date_end",
+                            "copyright_note"
+                        ],
+                        "tagFields": [
+                            {
+                                "index": 0,
+                                "key": "author_name"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

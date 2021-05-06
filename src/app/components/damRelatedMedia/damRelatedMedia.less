@@ -1,0 +1,67 @@
+.damRelatedMedia{
+    display: inline;
+    .box-frame {
+        width: 130px;
+        height: 130px;
+        display: inline-block;
+        position: relative;
+        .frame {
+            .img{
+                .title{
+                    background: rgba(0,0,0,0.5);
+                }
+            }
+            .responsive-container {
+                border: none;
+            }
+        }
+        .frame-icon {
+            position: absolute;
+            top: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            padding: 4px;
+            float: left;
+            cursor:pointer;
+            &.remove-from-linked{
+                left: 5px;
+            }
+            &.edit-media{
+                right: 5px;
+            }
+            
+        }
+    }
+}
+body{
+    .container-multi-drag{
+        display: inline-block;
+        z-index:100;
+        .box-info{
+            width: 100px;
+            padding: 3px;
+            font-size: 12px;
+        }
+        .box-num-ele{
+            background: green;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 10px;
+            color:#FFF;
+        }
+        .box-multi-drag{
+            width: 40px;
+            height:40px;
+            display: inline-block;
+            margin: 2px;
+            overflow: hidden;
+            text-align:center;
+            img{
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }   
+    }
+}

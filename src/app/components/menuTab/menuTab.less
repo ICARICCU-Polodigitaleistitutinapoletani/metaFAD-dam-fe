@@ -1,0 +1,51 @@
+.menuTab{
+    ul.tabs{
+        margin: 10px 15px 0px 15px;
+        border-bottom:@border-default;
+        @media screen and (max-width: 767px) {
+            padding: 0;
+        }
+        li{
+            margin-left:10px;
+            @media screen and (max-width: 787px) {
+                font-size: 11px;
+                padding: 5px 0px;
+            }
+            @media screen and (min-width: 788px) and (max-width: 885px) {
+                font-size: 12px;
+                padding: 5px;
+            }
+        }
+        .tab{
+            float:right;
+            display:inline;
+            border-top:@border-default;
+            border-left:@border-default;
+            border-right:@border-default;
+            border-bottom:0;
+            min-width:30px;
+            padding:5px 10px;
+            background-color:@gray1;
+            a, a:link, a:hover, a:visited, a:active{
+                color: @gray5;
+                position: relative;
+                float: left;
+                padding:5px;
+            }
+            &:hover{
+                background-color:@gray2;
+            }
+            &.active{
+                background-color:@blue;
+                border: 1px solid #0048c9;
+                margin-bottom: -1px;
+                font-weight: 200;
+                letter-spacing: 0.05rem;
+                a, a:link, a:hover, a:visited, a:active
+                {
+                    color:#fff;
+                }
+            }
+        }
+    }
+}

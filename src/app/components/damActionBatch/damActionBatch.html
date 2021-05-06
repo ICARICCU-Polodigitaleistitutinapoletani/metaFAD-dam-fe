@@ -1,0 +1,182 @@
+<div class="damActionBatch" ng-class="{'action-editor':damActionBatch.actionEditor}">
+    <div class="simple-loading" ng-if="damActionBatch.actionEditor && !damActionBatch.ready">
+        <div class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+    </div>
+    <div class="damActionBatch-content" ng-class="{'loaded': damActionBatch.ready}">
+        <div class="box-action box-actionPanel" ng-class="{'float':damActionBatch.actionEditor}" ng-if="damActionBatch.actionPanel">
+            <p ng-if="!damActionBatch.medias.length>1"><b>L'azione verrà applicata a {{damActionBatch.medias.length}} file</b></p>
+            <div class="preview-box" ng-show="damActionBatch.actionEditor && damActionBatch.showAnteprima">
+                <p><b>Anteprima ritaglio</b></p>
+                <div class="preview_wrapper">
+                    <div class="preview"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">Nome stream</label>
+                <input type="text" class="form-control" placeholder="Inserisci nome dello stream" ng-model="damActionBatch.newNameStream">
+            </div>
+            <div class="panel" ng-class="{'panel-default':!damActionBatch.actions.setImageFormat.selected, 'panel-primary':damActionBatch.actions.setImageFormat.selected}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Converti</h3>
+                    <input class="input-actions" type="checkbox" ng-model="damActionBatch.actions.setImageFormat.selected"/>
+                </div>
+                <div class="panel-body" uib-collapse="!damActionBatch.actions.setImageFormat.selected">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            Formato
+                        </div>
+                        <div class="col-xs-8">
+                            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+                                    {{damActionBatch.actions.setImageFormat.parameters.format || "Scegli formato"}}<span class="caret"></span>
+                                </button>
+                                <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                    <li role="menuitem" ng-repeat="type in damActionBatch.fileTypes"><a href="" ng-click="damActionBatch.actions.setImageFormat.parameters.format=type">{{type}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel" ng-class="{'panel-default':!damActionBatch.actions.resize.selected, 'panel-primary':damActionBatch.actions.resize.selected}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ridimensiona</h3>
+                    <input class="input-actions" type="checkbox" ng-change="damActionBatch.setActionInEditor('resize')" ng-model="damActionBatch.actions.resize.selected"/>
+                </div>
+                <div class="panel-body" uib-collapse="!damActionBatch.actions.resize.selected">
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <label for="name">Larghezza</label>
+                                <input type="number" class="form-control" placeholder="px" ng-model="damActionBatch.actions.resize.parameters.width" ng-blur="damActionBatch.actions.resize.setMeasureConcat('width')"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <label for="name">Altezza</label>
+                                <input type="number" class="form-control" placeholder="px" ng-model="damActionBatch.actions.resize.parameters.height" ng-blur="damActionBatch.actions.resize.setMeasureConcat('height')"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="btn-conc" ng-click="damActionBatch.actions.resize.setConcat(damActionBatch.actions.resize.concat)">
+                                <i class="fa" ng-class="{'fa-chain':damActionBatch.actions.resize.concat, 'fa-chain-broken':!damActionBatch.actions.resize.concat}"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel" ng-class="{'panel-default':!damActionBatch.actions.rotate.selected, 'panel-primary':damActionBatch.actions.rotate.selected}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ruota</h3>
+                    <input class="input-actions" type="checkbox" ng-model="damActionBatch.actions.rotate.selected"/>
+                </div>
+                <div class="panel-body" uib-collapse="!damActionBatch.actions.rotate.selected">
+                    <form>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <label>
+                                    <input type="radio" name="actiontRotation" ng-value="-90" value="-90" ng-model="damActionBatch.actions.rotate.parameters.degrees" ng-change="damActionBatch.setActionInEditor('rotate')"> <i class="fa fa-undo"></i> Ruota di 90° a sinistra
+                                </label>
+                            </div>
+                            <div class="col-xs-4">
+                                <label>
+                                    <input type="radio" name="actiontRotation" ng-value="180" value="180" ng-model="damActionBatch.actions.rotate.parameters.degrees" ng-change="damActionBatch.setActionInEditor('rotate')"> <i class="fa fa-circle-o-notch"></i> Ruota di 180°
+                                </label>
+                            </div>
+                            <div class="col-xs-4">
+                                <label>
+                                    <input type="radio" name="actiontRotation" ng-value="90" value="90" ng-model="damActionBatch.actions.rotate.parameters.degrees" ng-change="damActionBatch.setActionInEditor('rotate')"> <i class="fa fa-repeat"></i> Ruota di 90° a destra
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel" ng-class="{'panel-default':!damActionBatch.actions.flop.selected, 'panel-primary':damActionBatch.actions.flop.selected}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Rifletti orizzontalmente</h3>
+                    <input class="input-actions" type="checkbox" ng-change="damActionBatch.setActionInEditor('flop')" ng-model="damActionBatch.actions.flop.selected"/>
+                </div>
+            </div>
+            <div class="panel" ng-class="{'panel-default':!damActionBatch.actions.flip.selected, 'panel-primary':damActionBatch.actions.flip.selected}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Rifletti verticalmente</h3>
+                    <input class="input-actions" type="checkbox" ng-change="damActionBatch.setActionInEditor('flip')" ng-model="damActionBatch.actions.flip.selected"/>
+                </div>
+            </div>
+            <div class="panel" ng-class="{'panel-default':!damActionBatch.actions.resampleImage.selected, 'panel-primary':damActionBatch.actions.resampleImage.selected}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ricampiona immagine</h3>
+                    <input class="input-actions" type="checkbox" ng-model="damActionBatch.actions.resampleImage.selected"/>
+                </div>
+                <div class="panel-body" uib-collapse="!damActionBatch.actions.resampleImage.selected">
+                    <form>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="name">Risoluzione X</label>
+                                    <input type="number" class="form-control" placeholder="px/inch" ng-model="damActionBatch.actions.resampleImage.parameters.xResolution"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="name">Risoluzione Y</label>
+                                    <input type="number" class="form-control" placeholder="px/inch" ng-model="damActionBatch.actions.resampleImage.parameters.yResolution"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 label-ellipsis">
+                                <div class="form-group">
+                                    <input type="checkbox" ng-model="damActionBatch.actions.resampleImage.parameters.resize" />
+                                    <label for="name">Ridimensiona</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 label-ellipsis" ng-if="damActionBatch.actions.resampleImage.parameters.resize">
+                                <div class="form-group">
+                                    <input type="checkbox" ng-model="damActionBatch.actions.resampleImage.parameters.maintainAspect" />
+                                    <label for="name">Mantieni aspetto</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="box-btn">
+                <button type="button" class="btn btn-primary" ng-click="damActionBatch.prepareApplyActions()">Applica modifiche</button>
+            </div>
+        </div>
+        <div class="box-action box-actionEditor" ng-class="{'float':damActionBatch.actionPanel}" ng-if="damActionBatch.actionEditor">
+            <div class="editingButtons">
+                <a href="" ng-click="damActionBatch.zoom(0.2)"><i class="fa fa-search-plus"></i></a>
+                <a href="" ng-click="damActionBatch.zoom(-0.2)"><i class="fa fa-search-minus"></i></a>
+                <a class="separator"></a>
+                <a href="" ng-click="damActionBatch.setDragMode('move')"><i class="fa fa-arrows" ng-class="{active: damActionBatch.currentCommand == 'move'}"></i></a>
+                <a class="separator"></a>
+                <!--<a href="" ng-click="damActionBatch.setDragMode('crop')" ng-if="!damActionBatch.actions.resize.selected"><i class="fa fa-crop" ng-class="{active: damActionBatch.currentCommand == 'crop'}"></i></a>-->
+                <div class="aspectRatioButtons" ng-if="damActionBatch.actionCrop" ng-init="damActionBatch.currentAspectRatio = 3">
+                    <a href="" ng-click="damActionBatch.aspectRatio(16/9); damActionBatch.currentAspectRatio = 0;" ng-class="{active:  damActionBatch.currentAspectRatio == 0}">16:9</a>
+                    <a href="" ng-click="damActionBatch.aspectRatio(4/3); damActionBatch.currentAspectRatio = 1;" ng-class="{active:  damActionBatch.currentAspectRatio == 1}">4:3</a>
+                    <a href="" ng-click="damActionBatch.aspectRatio(1/1); damActionBatch.currentAspectRatio = 2;" ng-class="{active:  damActionBatch.currentAspectRatio == 2}">1:1</a>
+                    <a href="" ng-click="damActionBatch.aspectRatio('remove');  damActionBatch.currentAspectRatio = 3;" ng-class="{active:  damActionBatch.currentAspectRatio == 3}">X:Y</a>
+                </div>
+                <!--<a href="" ng-click="damActionBatch.flop()"><i class="fa fa-arrows-h"></i></a>
+                <a class="separator"></a>
+                <a href="" ng-click="damActionBatch.rotate(-90)"><i class="fa fa-undo"></i></a>
+                <a href="" ng-click="damActionBatch.rotate(90)"><i class="fa fa-repeat"></i></a>
+                <a class="separator"></a>-->
+                <a href="" ng-click="damActionBatch.cropperCommand('crop')" ng-if="!damActionBatch.actions.resize.selected"><i class="fa fa-crop icon-apply"></i></a>
+                <a href="" ng-click="damActionBatch.cropperCommand('clear')"><i class="fa fa-close icon-cancel"></i></a>
+                <a href="" ng-click="damActionBatch.cropperCommand('reset')"><i class="fa fa-refresh icon-reset"></i></a>
+                <a class="separator"></a>
+                <a href="" ng-click="damActionBatch.prepareApplyActions()" class="button bg-blue" ng-if="!damActionBatch.actionPanel">Conferma</a>
+            </div>
+            <div class="img-container">
+                <img id="editingImage" ng-src="{{damActionBatch.activeMedia.img}}" >
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="filterSearch">
+    <ul class="faccetta-main-ul">
+        <li class="faccetta-main" ng-click="filterSearch.filtersBox.filters=filterSearch.toggle(filterSearch.filtersBox.filters)">
+            <i class="fa fa-plus-square fa-fw left" ng-if="!filterSearch.filtersBox.filters"></i>
+            <i class="fa fa-minus-square fa-fw left" ng-if="filterSearch.filtersBox.filters"></i>
+            Raffina ricerca
+            <i class="fa fa-crosshairs fa-fw right"></i><div class="clear"></div>
+        </li>
+        <li class="faccetta-content" ng-if="filterSearch.filtersBox.filters && filterSearch.filtersApplied.length>0">
+            <ul>
+                <li>
+                    <div class="facet-key">Filtri applicati</div>
+                    <ul>
+                        <li class="applied-filters" ng-class="::{disabled: filterSearch.checkContantFilters(filter)}" ng-repeat="filter in filterSearch.filtersApplied track by $index">
+                            <div ng-repeat="(key,val) in filter" ng-if="!filterSearch.facetInFacetOr(key)">
+                                <ng-template ng-if="key !== 'searchSimilarImg'">
+                                    <span class="key">
+                                        <i class="fa fa-times-circle-o icon-remove" ng-click="filterSearch.removeFiltersApplied(filter)"></i>
+                                        {{key | fromKeyToLabel}}
+                                    </span>
+                                    <span class="value">{{val | fromKeyToLabel}}</span>
+                                </ng-template>
+                                <ng-template ng-if="key === 'searchSimilarImg'">
+                                    <span class="key">
+                                        <i class="fa fa-times-circle-o icon-remove" ng-click="filterSearch.disableSearchSimilar()"></i>
+                                        Immagini simili a
+                                    </span>
+                                    <span class="value">
+                                        <img ng-src="{{ filterSearch.searchSimilarPreviewUrl }}" />
+                                    </span>
+                                </ng-template>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li ng-if="filterSearch.filtersBox.filters">
+            <ul>
+                <li class="faccetta-content" ng-repeat="(keyFilter,valFilter) in filterSearch.filters" ng-if="valFilter.length!==0">
+                    <div class="facet-key">{{keyFilter | fromKeyToLabel}}</div>
+                    <ul class="showAllFacetsItemsContainer" ng-scrollbars>
+                        <!--<li class="single-facet" ng-if="valFilter.length===0">
+                            <div>Nessun filtro applicabile</div>
+                        </li>-->
+                        <li class="single-facet" ng-repeat="filter in valFilter | filter:query | limitTo:filterSearch[keyFilter].filtersLimit || filterSearch.facetGroupNum">
+                            <div ng-if="!filterSearch.facetInFacetOr(keyFilter)" ng-click="filterSearch.addFiltersApplied(keyFilter,filter.label)" ng-class="{'applied':filterSearch.isInFiltersApplied(keyFilter)}">
+                                {{filter.label | fromKeyToLabel}}
+                                <a class="right">({{filter.num}})</a>
+                            </div>
+                            <div ng-if="filterSearch.facetInFacetOr(keyFilter)" class="facetOr">
+                                <input class="inputFacetOr" type="checkbox" ng-model="filter.checked" ng-change="filterSearch.changeFacetOr(keyFilter,filter)"
+                                /> {{filter.label | fromKeyToLabel}}
+                                <a class="right">({{filter.num}})</a>
+                            </div>
+                            <div class="showAll" ng-if="$index===(filterSearch.facetGroupNum-1) && filterSearch[keyFilter].filtersLimit!=='all'" ng-click="filterSearch[keyFilter].filtersLimit='all'">
+                                <i class="fa fa-plus-square"></i>
+                                <span class="text">Mostra tutti</span>
+                            </div>
+                        </li>
+                        <li class="single-facet" ng-if="filterSearch[keyFilter].filtersLimit==='all'">
+                            <div class="box-showFaccette" ng-click="filterSearch[keyFilter].filtersLimit=filterSearch.facetGroupNum">
+                                <i class="fa fa-plus-square"></i>
+                                <span class="text">Mostra i primi {{filterSearch.facetGroupNum}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li ng-if="filterSearch.templateoptions.collectionManager && filterSearch.showColFol.collection" class="faccetta-main" ng-click="filterSearch.filtersBox.collection=filterSearch.toggle(filterSearch.filtersBox.collection)">
+            <i class="fa fa-plus-square fa-fw left" ng-if="!filterSearch.filtersBox.collection"></i>
+            <i class="fa fa-minus-square fa-fw left" ng-if="filterSearch.filtersBox.collection"></i>
+            Collezioni
+            <i class="fa fa-th fa-fw right"></i>
+            <div class="clear"></div>
+        </li>
+        <li ng-if="filterSearch.templateoptions.collectionManager">
+            <ul class="collezioni" ng-show="filterSearch.filtersBox.collection">
+                <li>
+                    <!--<div class="input-group liveFilter">
+                        <input type="text" class="form-control" placeholder="Cerca.." ng-model="collectionFilter">
+                        <span class="input-group-addon fa fa-search" ng-click="filterCollectionFolder(collections, collectionFilter)"></span>
+                    </div>-->
+                    <dam-collection-manager datainstance="collection" tree-config="filterSearch.treeConfig"></dam-collection-manager>
+                </li>
+            </ul>
+        </li>
+        <li ng-if="filterSearch.templateoptions.folderManager && filterSearch.showColFol.folder" class="faccetta-main" ng-click="filterSearch.filtersBox.folder=filterSearch.toggle(filterSearch.filtersBox.folder)">
+            <i class="fa fa-plus-square fa-fw left" ng-if="!filterSearch.filtersBox.folder"></i>
+            <i class="fa fa-minus-square fa-fw left" ng-if="filterSearch.filtersBox.folder"></i>
+            Cartelle
+            <i class="fa fa-folder-open fa-fw right"></i>
+            <div class="clear"></div>
+        </li>
+        <li ng-if="filterSearch.templateoptions.folderManager">
+            <ul class="collezioni" ng-show="filterSearch.filtersBox.folder">
+                <li>
+                    <!--<div class="input-group liveFilter">
+                        <input type="text" class="form-control" placeholder="Cerca.." ng-model="folderFilter">
+                        <span class="input-group-addon fa fa-search" ng-click="filterCollectionFolder(folders, folderFilter)"></span>
+                    </div>-->
+                    <dam-collection-manager datainstance="folder" tree-config="filterSearch.treeConfig"></dam-collection-manager>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

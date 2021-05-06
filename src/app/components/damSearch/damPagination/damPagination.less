@@ -1,0 +1,42 @@
+.damPagination{
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 232px;
+    text-align: center;
+    .box-pagination {
+        border: 1px solid #000;
+        color: #0078cc;
+        display: inline-block;
+        line-height: 30px;
+        min-width: 30px;
+        font-size: 18px;
+        font-weight: 100;
+        text-align:center;
+        background: #FFF;
+        margin: 0 3px;
+        &:hover{
+            background: #eee;
+            cursor: pointer;
+        }
+        visibility:hidden;
+        &.visible{
+            visibility:visible;
+        }
+        &.box-number{
+            border:none;
+        }
+    }
+    .box-totPage{
+        display: inline-block;
+        line-height: 30px;
+        min-width: 30px;
+        font-size: 18px;
+        font-weight: 100;
+    }
+    .totPage {
+        min-width: 30px;
+        text-align: center;
+        display: inline-block;
+    }
+}

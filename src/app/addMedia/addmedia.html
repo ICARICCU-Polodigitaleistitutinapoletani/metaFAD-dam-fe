@@ -1,0 +1,178 @@
+<div class="addMedia" style="height:{{addmedia.eleHeight.content}}">
+    <div style="height: 15px;"></div>
+    <div class="row">
+        <div class="col-xs-12 add-from-computer-or-server">
+            <a ng-class="(!addMediaActiveTab) ? 'fg-black' : 'fg-grey'" ng-click="addMediaActiveTab=0">Dal computer</a> | <!--<a ng-class="(addMediaActiveTab) ? 'fg-black' : 'fg-grey'" ng-click="addMediaActiveTab=1">Dal server</a>-->
+        </div>
+    </div>
+    <div class="row maxUpload" ng-if="addmedia.maxFilesConfig || addmedia.maxSizeConfig">
+        <div class="col-xs-12" ng-if="addmedia.maxFilesConfig">
+            <span>Puoi caricare al massimo {{addmedia.maxFilesConfig}} file alla volta</span><span ng-if="addmedia.maxSizeConfig">, ognuno di massimo {{ addmedia.maxSizeConfig }} MB</span>.
+        </div>
+        <div class="col-xs-12" ng-if="!addmedia.maxFilesConfig">
+            Puoi caricare file di massimo {{ addmedia.maxSizeConfig }} MB ognuno.
+        </div>
+    </div>
+    <div class="row contentUpload">
+        <div ng-class="{'col-xs-12':!hasOneCompleteElement,'col-xs-6 col-sm-7 col-md-8':hasOneCompleteElement}">
+            <div class="box-uploadMedia" ng-class="{'add-from-computer':hasOneCompleteElement}" ng-show="!addMediaActiveTab" ng-scrollbars>
+                <form class="dropzone" ng-class="(hasOneCompleteElement) ? 'dropzone-not-empty' : ''" method="post" enctype="multipart/form-data" ng-dropzone dropzone="dropzone" dropzone-config="dropzoneConfig">
+                    <div class="dz-message" ng-show="empty">
+                        <span>Trascina i file in quest'area</span>
+                        <span class="note">oppure</span>
+                        <span class="button button bg-blue">Seleziona i file</span>
+                    </div>
+                </form>
+                <div id="preview-template" style="display: none;" ng-model="preview">
+                    <div class="dz-preview dz-file-preview">
+                        <div class="dz-details">
+                            <img data-dz-thumbnail />
+                        </div>
+                        <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                        <div class="dz-success-mark"><i class="fa fa-check"></i></div>
+                        <div class="dz-error-mark"><i class="fa fa-times-circle"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div ng-class="{'add-from-server':hasOneCompleteElement}" ng-show="addMediaActiveTab">
+                <div class="col-xs-12 posizione">
+                    Posizione: <a href="" ng-show="currentFilesystemURI != '/'" ng-click="getServerFiles('/')">/</a><a ng-repeat="serverFolder in getFilesystemCurrentPaths() track by $index" ng-click="getServerFilesFromIndex($index)">{{serverFolder}}/</a>
+                </div><!-- .col-xs-12 -->
+                <div class="col-xs-12 lista">
+                    <table style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <th></th>
+                                <th>Nome file</th>
+                                <th>Dimensione</th>
+                                <th>Ultima modifica</th>
+                            </tr>
+                            <tr ng-repeat="serverFile in serverFiles">
+                                <td><input type="checkbox" ng-show="serverFile.type != 'dir'" ng-click="addFileFromServer(serverFile)"/></td>
+                                <td class="fg-blue" ng-show="serverFile.type == 'dir'"><a href="" ng-click="openDirectory(serverFile.filename)">{{serverFile.filename}}</a></td>
+                                <td class="fg-blue" ng-show="serverFile.type != 'dir'">{{serverFile.path.substring(serverFile.path.lastIndexOf('/') + 1)}}</td>
+                                <td>{{getFileSize(serverFile)}}</td>
+                                <td>{{timeStampToDate(serverFile.timestamp)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- .col-xs-12 -->
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-5 col-md-4" ng-if="hasOneCompleteElement">
+            <div class="right-box-container row">
+                <div class="right-box col-xs-12" ng-scrollbars>
+                    <div class="preview-box" ng-if="multipleSelectedFiles.length<=1">
+                        <div class="file-image-box col-xs-5">
+                            <img class="preview-image" ng-src="{{getPreview(selectedFile)}}" ng-hide="addmedias.fileActive.isOnServer"/>
+                            <img class="preview-image" src="./img/default_document.png" ng-show="selectedFile.isOnServer"/>
+                        </div>
+                        <div class="file-info-box col-xs-7">
+                            <p class="file-title">{{selectedFile.name || selectedFile.path.substring(selectedFile.path.lastIndexOf('/'))}}</p>
+                            <p class="file-type">Dimensione: {{getFileSize(selectedFile)}}</p>
+                            <p class="file-size">Formato: {{selectedFile.extension || getFileType(selectedFile)}}</p>
+                            <p class="file-error" ng-show="selectedFile.status==='error'">Il file non è stato caricato{{getFileErrorDetails(selectedFile)}}</p>
+                            <button class="btn-remove" ng-click="removeFile(selectedFile)">Elimina</button>
+                        </div>
+                    </div>
+                    <div class="preview-box" ng-if="multipleSelectedFiles.length>1">
+                        <div class="file-image-box col-xs-5">
+                            <img class="preview-image" src="./img/default_document.png" />
+                        </div>
+                        <div class="file-info-box col-xs-7">
+                            <p class="file-title">Selezionati {{multipleSelectedFiles.length}}  Files</p>
+                            <p class="file-size">Dim. totale: {{getMultipleSelectedFileSize()}}</p>
+                            <button class="btn-remove" ng-click="removeFiles(multipleSelectedFiles)">Elimina</button>
+                        </div>
+                    </div>
+                    <div id="addFrom" class="dynamic-content show-on-active active col-xs-12" >
+                        <form sf-schema="addmedia.schemaForm.datastream.SIMPLE.SimpleData.schema" sf-form="addmedia.schemaForm.datastream.SIMPLE.SimpleData.form" sf-model="multipleSelectedFiles.length<=1 ? selectedFile.document['MainData'] : selectedFileMulti['MainData']" ></form>
+                    </div>
+                </div>
+                <a class="btn col-xs-12 button button-set" ng-if="multipleSelectedFiles.length>1" ng-click="updateMultipleFormInupt()">Imposta</a>
+                <div class="btn col-xs-12 button bg-blue buttonSave" ng-click="addmedia.saveMedias()" ng-show="getTotFilesToSave() > 0">Salva {{getTotFilesToSave()}} media</div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="col-xs-12 addMediaOption" ng-if="!addmedia.boxFrame" ng-show="!addMediaActiveTab && hasOneCompleteElement">
+            <div class="row">
+                <div class="col-xs-3 addMediaOptionTitle">Aggiungi file alla collezione</div>
+                <div class="col-xs-5 button filter-media-type bg-white align-left">
+                    <div ng-click="addmedia.manageColFolder('collection')" class="filter-media-type-text">
+                        <i class="fa fa-{{filterMediaTypeMenu[activeMediaType].faIcon}} fg-grey"></i>
+                        <span class="title">
+                            Aggiungi alla collezione
+                        </span>
+                        <i class="fa fa-caret-down fa-fw right"></i>
+                    </div>
+                    <div class="filter-media-type-dropdown colFol-dropdown" ng-show="addmedia.activeColFol.collection">
+                        <div id="collection" class="dynamic-content">
+                            <li class="newColFol">
+                                <span class="fancytree-node fancytree-folder fancytree-has-children fancytree-lazy fancytree-exp-cd fancytree-ico-cf">
+                                    <input type="checkbox" ng-model="addmedia.newColFol.collection.active"/>
+                                    <span class="fancytree-icon icon-folder-close-alt"></span>
+                                    <span class="fancytree-title">Crea nuova collezione</span>
+                                </span>
+                            </li>
+                            <dam-collection-manager datainstance="collection" tree-config="addmedia.treeConfig"></dam-collection-manager>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="input-group" ng-if="addmedia.newColFol.collection.active" >
+                        <input type="text" class="form-control" placeholder="Nome Collezione" ng-model="addmedia.newColFol.collection.name"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="addmedia.addColFol('collection')">Salva</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="col-xs-12 addMediaOption" ng-if="!addmedia.boxFrame" ng-show="!addMediaActiveTab && hasOneCompleteElement">
+            <div class="row">
+                <div class="col-xs-3 addMediaOptionTitle">Aggiungi file alla cartella</div>
+                <div class="col-xs-5 button filter-media-type bg-white align-left">
+                    <div ng-click="addmedia.manageColFolder('folder')" class="filter-media-type-text">
+                        <i class="fa fa-{{filterMediaTypeMenu[activeMediaType].faIcon}} fg-grey"></i>
+                        <span class="title">
+                            Aggiungi alla cartella
+                        </span>
+                        <i class="fa fa-caret-down fa-fw right"></i>
+                    </div>
+                    <div class="filter-media-type-dropdown colFol-dropdown" ng-show="addmedia.activeColFol.folder">
+                        <div id="collection" class="dynamic-content">
+                            <li class="newColFol">
+                                <span class="fancytree-node fancytree-folder fancytree-has-children fancytree-lazy fancytree-exp-cd fancytree-ico-cf">
+                                    <input type="checkbox" ng-model="addmedia.newColFol.folder.active"/>
+                                    <span class="fancytree-icon icon-folder-close-alt"></span>
+                                    <span class="fancytree-title">Crea nuova cartella</span>
+                                </span>
+                            </li>
+                            <dam-collection-manager datainstance="folder" tree-config="addmedia.treeConfig"></dam-collection-manager>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="input-group" ng-if="addmedia.newColFol.folder.active" >
+                        <input type="text" class="form-control" placeholder="Nome Cartella" ng-model="addmedia.newColFol.folder.name"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="addmedia.addColFol('folder')">Salva</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 addMediaOption" ng-show="!addMediaActiveTab && hasOneCompleteElement">
+        <div class="addMediaOptionTitle">Rinomina</div>
+        <input type="checkbox" ng-model="rename" />
+        <div class="col-xs-2"><input type="text" placeholder="Nomenclatura" ng-show="rename" ng-model="renameName"/></div>
+        <div class="col-xs-2"><input type="text" placeholder="Inizio" ng-show="rename" ng-model="renameStartWith"/></div>
+        <div class="col-xs-2"><input type="text" placeholder="Fine" ng-show="rename" ng-model="renameEndWith"/></div>
+        <div class="col-xs-2"><input type="text" placeholder="Step" ng-show="rename" ng-model="renameStep"/></div>
+    </div>
+</div>

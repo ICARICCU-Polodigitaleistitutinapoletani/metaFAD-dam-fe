@@ -1,0 +1,60 @@
+#damSearch{
+    padding-left: 0px;
+    padding-right: 0px;
+    &.modal-actionBatch{
+        .modal-dialog {
+            height:95%;
+            overflow-y: auto;
+        }
+        &.modal-editor{
+            .modal-dialog {
+                width:95%;
+                overflow-y: auto;
+                .modal-content{
+                    height:100%;
+                    overflow-y: auto;
+                    .modal-body{
+                        position: absolute;
+                        top:41px;
+                        bottom: 10px;
+                        width: 100%;
+                    }
+                }
+            }  
+        }
+        .modal-title {
+            border-bottom: 1px solid #bbb;
+            padding-bottom: 5px;
+            margin-right: 20px;
+        }
+        .modal-header {
+            border-bottom: none;
+        }
+    }
+
+    .list {
+        margin-bottom: 20px;
+        .selectedItems-info {
+            position: absolute;
+            bottom: 10px;
+        }
+        &.has-pagination {
+            height: ~"calc(100% - 50px)";
+            margin-bottom: 50px;
+            &.has-item-selected.is-scrollable-list {
+                height: ~"calc(100% - 70px)";
+            }
+            + .selectedItems-info {
+                position: absolute;
+                bottom: 50px;
+            }
+        }
+    }
+    .btn-search-similar {
+        margin-right: 5px;
+        border: 1px solid #999999;
+        &:hover {
+            background-color: @gray4;
+        }
+    }
+}

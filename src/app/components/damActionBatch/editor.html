@@ -1,0 +1,31 @@
+<div class="row edit-main-content" ng-app="damApp">
+    <div class="col-xs-12 editingButtons">
+        <a href="" ng-click="editor.zoom(0.2)"><i class="fa fa-search-plus"></i></a>
+        <a href="" ng-click="editor.zoom(-0.2)"><i class="fa fa-search-minus"></i></a>
+        <a class="separator"></a>
+        <a href="" ng-click="editor.setDragMode('move')"><i class="fa fa-arrows" ng-class="{active: editor.currentCommand == 'move'}"></i></a>
+        <a class="separator"></a>
+        <a href="" ng-click="editor.setDragMode('crop')"><i class="fa fa-crop" ng-class="{active: editor.currentCommand == 'crop'}"></i></a>
+        <div class="aspectRatioButtons" ng-if="editor.currentCommand == 'crop'" ng-init="editor.currentAspectRatio = 3">
+            <a href="" ng-click="editor.aspectRatio(16/9); editor.currentAspectRatio = 0;" ng-class="{active:  editor.currentAspectRatio == 0}">16:9</a>
+            <a href="" ng-click="editor.aspectRatio(4/3); editor.currentAspectRatio = 1;" ng-class="{active:  editor.currentAspectRatio == 1}">4:3</a>
+            <a href="" ng-click="editor.aspectRatio(1/1); editor.currentAspectRatio = 2;" ng-class="{active:  editor.currentAspectRatio == 2}">1:1</a>
+            <a href="" ng-click="editor.aspectRatio('remove');  editor.currentAspectRatio = 3;" ng-class="{active:  editor.currentAspectRatio == 3}">X:Y</a>
+        </div>
+        <a class="separator"></a>
+        <a href="" ng-click="editor.flip()"><i class="fa fa-arrows-h"></i></a>
+        <a class="separator"></a>
+        <a href="" ng-click="editor.rotate(-90)"><i class="fa fa-undo"></i></a>
+        <a href="" ng-click="editor.rotate(90)"><i class="fa fa-repeat"></i></a>
+        <a class="separator"></a>
+        <a href="" ng-click="editor.cropperCommand('crop')"><i class="fa fa-check icon-apply"></i></a>
+        <a href="" ng-click="editor.cropperCommand('clear')"><i class="fa fa-close icon-cancel"></i></a>
+        <a href="" ng-click="editor.cropperCommand('reset')"><i class="fa fa-refresh icon-reset"></i></a>
+        <a class="separator"></a>
+        <a href="" ng-click="editor.save(); editor.cancel()" class="button bg-blue">Conferma</a>
+    </div>
+    <div class="img-container col-xs-12">
+        <img id="editingImage" cropper-url="{{editor.activeMedia.img}}" width="800" cropper>
+    </div>
+
+</div>

@@ -1,0 +1,86 @@
+<div class="collectionFolder">
+    <div class="box-moveMedia" ng-if="colFol.moveMedia.show">
+        <div class="box-header">
+            <div>Cosa vuoi fare?</div>
+        </div>
+        <div class="box-body">
+            <p>Vuoi {{colFol.type==='collection' ? 'copiare' : 'spostare'}} il media da una collezione all'altra?</p>
+            <div class="box-btn">
+                <!--<div class="btn btn-primary" ng-if="colFol.type==='collection'">Sposta</div>-->
+                <div class="btn btn-primary" ng-click="colFol.moveMedia.copia()">{{colFol.type==='collection' ? 'Copia' : 'Sposta'}}</div>
+                <div class="btn btn-danger" ng-click="colFol.moveMedia.close()">Annulla</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="leftColumn no-padding col-xs-3 col-lg-2">
+            <div style="overflow-y: auto;height:{{colFol.scrollHeight['boxRightColumn']}};">
+                <div class="box-title">
+                    <div class="title-menu" ng-click="colFol.refreshActiveNode()">{{(colFol.type === 'collection')?'Collezioni':'Cartelle'}}</div>
+                    <div class="box-btn-menu">
+                        <i class="fa fa-plus-square-o" ng-if="colFol.tabState.editing" ng-click="colFol.addCollectionFolder()"></i>
+                        <i class="fa fa-pencil-square-o icon-edit" ng-class="{'active':colFol.tabState.editing}" ng-click="colFol.setEditState(colFol.tabState.editing,true)"></i>
+                    </div>
+                </div>
+                <div class="box-tree" ng-class="{'edit':colFol.tabState.editing}">
+                    <div ng-if="colFol.getChildrenError" class="childrenError">{{colFol.getChildrenError}}</div>
+                    <dam-collection-manager datainstance="{{colFol.type}}" tree-config="colFol.treeConfig"></dam-collection-manager>
+                </div>
+            </div>
+        </div>
+        <div class="rightColumn col-xs-9 col-lg-10">
+            <div class="box-rightColumn" detect-position="boxRightColumn" style="overflow-y: auto;height:{{colFol.scrollHeight['boxRightColumn']}};">
+                <div ng-if="colFol.colActive === undefined" class="selectColMsg">
+                    Seleziona un elemento dalla lista per visualizzare il contenuto 
+                </div>
+                <div ng-class="{'hidden': !colFol.colActive}">
+                    <div class="btn-titleLeft" ng-click="colFol.openMediaPreview()" ng-if="colFol.tabState.browsing && colFol.colActive && colFol.totMedia > 0">
+                        <i class="fa fa-search"></i>
+                        Vedi media
+                    </div>
+                    <div class="boxRelatedMedia" ng-if="colFol.tabState.editing">
+                        <dam-related-media templateoptions="colFol.damRelatedMediaTemplateOptions" set-draggable="true"></dam-related-media>
+                        <dam-pagination ng-if="!colFol.damSearch"></dam-pagination>
+                        <!--<div class="item btnAddMedia" ng-if="colFol.colActive && colFol.damSearch">
+                            <div class="frame">
+                                <div class="img">
+                                    <div class="dummy">
+                                    </div>
+                                    <a class="square" href="">
+                                        <div style="text-align:center">
+                                            <i class="fa fa-plus"></i><br />
+                                            <span>Aggiungi</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="item btnSearchMedia" ng-if="colFol.colActive && (colFol.relMediaPages==0 || colFol.relMediaPage===colFol.relMediaPages)" ng-click="colFol.toggleSearch(colFol.damSearch)">
+                            <div class="frame">
+                                <div class="img">
+                                    <div class="dummy">
+                                    </div>
+                                    <a class="square" href="">
+                                        <div style="text-align:center">
+                                            <i class="fa" ng-class="{'fa-plus':!colFol.damSearch, 'fa-search':colFol.damSearch}"></i><br />
+                                            <span ng-if="!colFol.damSearch">Aggiungi media alla {{(colFol.type === 'collection')?'collezione':'cartella'}}</span>
+                                            <span ng-if="colFol.damSearch">Chiudi ricerca</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <dam-search ng-if="colFol.damSearch" templateoptions="colFol.damSearchTemplateOptions"></dam-search>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="colFol.containedMediaPreview">
+        <dam-media-viewer medias="colFol.containedMediaPreview.medias" options="colFol.containedMediaPreview.options"></dam-media-viewer>
+    </div>
+    <div class="box-cmsSelection" ng-if="colFol.cms">
+        <a href="" class="btn btn-default bg-grey" ng-click="colFol.returnSelection(true)">Annulla</a>
+        <a href="" class="btn btn-primary bg-blue" ng-click="colFol.returnSelection()">Inserisci</a>
+    </div>
+</div>

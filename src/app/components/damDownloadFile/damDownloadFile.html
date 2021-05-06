@@ -1,0 +1,11 @@
+<a ng-href="{{damDownloadFile.config.serverRoot + damDownloadFile.config.instance + '/bytestream/edit/true/' + damDownloadFile.doc.id + '/' + bytestream.name + '/'}}" 
+   ng-repeat="bytestream in damDownloadFile.doc.bytestream" 
+   ng-class="{'fg-blue': bytestream.selected}">
+    Scarica {{bytestream.name}}
+</a>
+<hr></hr>
+<a ng-href="{{damDownloadFile.config.serverRoot + damDownloadFile.config.instance + '/bytestream/edit/true/' + damDownloadFile.doc.id + '/original/?type_of_change=setImageFormat&format=' + fileType}}" 
+   download="{{damDownloadFile.bytestreamSelected.name}}" 
+   ng-repeat="fileType in damDownloadFile.fileTypes">
+    Scarica {{fileType}}
+</a>

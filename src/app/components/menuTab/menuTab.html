@@ -1,0 +1,11 @@
+<div class="menuTab" ng-if="menuTab.viewMenuTab">
+    <ul class="tabs">
+        <!--<li ng-show="!appParams.cms" class="tab" ng-click="mainActiveTab=4" ng-class="{active:mainActiveTab==4}"><a class="pointer" ng-href="#/settings"><i class="fa fa-cog fa-fw"></i></a></li>-->
+        <li ng-hide="menuTab.tabNoVisible.folder" class="tab" ng-click="menuTab.goToRouter(3,'main.collectionfolder',{is_folder:1})" ng-class="{active:menuTab.mainActiveTab==3}"><a class="pointer"><i class="fa fa-plus fa-fw"></i> Cartelle</a></li>
+        <li ng-hide="menuTab.tabNoVisible.collection" class="tab" ng-click="menuTab.goToRouter(2,'main.collectionfolder',{is_folder:0})" ng-class="{active:menuTab.mainActiveTab==2}"><a class="pointer"><i class="fa fa-plus fa-fw"></i> Collezioni</a></li>
+        <li ng-hide="menuTab.tabNoVisible.container" class="tab" ng-click="menuTab.goToRouter(4,'main.container',{})" ng-class="{active:menuTab.mainActiveTab==4}"><a class="pointer"><i class="fa fa-inbox fa-fw"></i> Aggiungi contenitore</a></li>
+        <li ng-hide="menuTab.tabNoVisible.addmedia" class="tab" ng-click="menuTab.goToRouter(1,'main.addmedia',{})" ng-class="{active:menuTab.mainActiveTab==1}"><a class="pointer"><i class="fa fa-upload fa-fw"></i> Aggiungi media</a></li>
+        <li ng-hide="menuTab.tabNoVisible.search" class="tab" ng-click="menuTab.goToRouter(0,'main.list',{})" ng-class="{active:menuTab.mainActiveTab==0}"><a class="pointer"><i class="fa fa-search fa-fw"></i> Ricerca</a></li>
+        <div class="clear"></div>
+    </ul>
+</div>

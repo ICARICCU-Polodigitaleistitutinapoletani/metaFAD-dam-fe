@@ -1,0 +1,188 @@
+.filterSearch {
+    .applied-filters{
+        font-size:12px;
+        .key{
+            font-weight: 300;
+            i{
+                font-size: 16px;
+                margin-right: 5px;
+                color: #555;
+                cursor: pointer;
+            }
+            .icon-remove{
+                cursor:pointer !important;
+            }
+        }
+        .value{
+            margin-left: 10px;
+            font-weight: 200;
+            
+            img {
+                margin: 5px 10px;
+                max-width: 100%;
+                max-height: 200px;
+            }
+        }
+        &.disabled{
+            color: #999; 
+            .key{
+                i{
+                    color: #999; 
+                }
+                .icon-remove{
+                    cursor:text !important;
+                }
+            }
+        }
+    }
+    ul{
+        padding: 5px 10px;
+        .liveFilter{
+            padding-left: 30px;
+            padding-right: 30px;
+            margin-bottom: 20px;
+            .fa-search{
+                background-color: @light-blue;
+                color: white;
+                border: 2px;
+                border-radius: 0px;
+                cursor: pointer;
+            }
+        }
+    }
+    .faccetta-main-ul{
+        padding:0;
+        margin:0;
+    }
+    .faccetta-main{
+        padding:5px;
+        background-color:@light-grey;
+        color: @gray5;
+        font-weight: 300;
+        font-size: 1.5rem;
+        letter-spacing: 0.05rem;
+        line-height:19px;
+        cursor: pointer;
+        i{
+            font-size:2rem;
+            color:@gray6;
+            &.fa-plus-square, &.fa-minus-square
+            {
+                font-size: 1.3rem;
+                padding: 3px 0px;
+                margin-right: 5px;
+            }
+        }
+    }
+    .faccetta-content{
+        padding-top:10px;
+        div.facet-key{
+            font-size: 1.6rem;
+            font-weight: 300;
+            margin-left:9px;
+            color: @blue;
+        }
+        div.facet-content {
+            padding: 5px 10px;
+        }
+        .filterSearchSimilar {
+            .facet-content {
+                text-align: center;
+                .fa {
+                    vertical-align: top;
+                    &:hover {
+                        cursor: pointer !important;
+                        opacity: .7;
+                    }
+                }
+            }
+        }
+        .showAllFacetsItemsContainer{
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        ul{
+            @media screen and (max-width: 820px) {
+                padding: 5px 5px;
+            }
+        }
+        .inputFacetOr{
+            height: 22px;
+            vertical-align: top;
+            cursor: pointer;
+        }
+    }
+    .single-facet{
+        border-bottom: 1px solid @grey;
+        font-weight:200;
+        &:hover{
+        }
+        div{
+            font-size: 1.3rem;
+            cursor: pointer !important;
+            padding: 0px 30px 0px 0;
+            position: relative;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            height: 29px;
+            line-height: 29px;
+            a{
+                color: #000;
+                right: 0;
+                top: 0px;
+                position: absolute;
+            }
+            &:hover{
+                color: #000;
+                background-color: @gray1;
+            }
+            i{
+                margin-right: 5px;
+                color: #aaa;
+                font-size: 17px;
+            }
+            &.facetOr {
+                &:hover{
+                    background-color: transparent;
+                    cursor: default !important;
+                }
+            }
+            &.applied {
+                &:hover{
+                    background-color: transparent;
+                    cursor: default !important;
+                }
+            }
+        }
+        .showAll{
+            padding:0px;
+            color:#999;
+            border-top: 1px solid #aaa;
+            line-height: 30px;
+        }
+    }
+    .search{
+        input[type=text]{
+            float:left;
+            width:60%;
+        }
+        .button{
+            float:left;
+        }
+    }
+    ul .collezioni{
+        padding:15px 0;
+        input{
+            height:auto;
+        }
+        .collezione{
+            font-size:1.4rem;
+            font-weight:200;
+            &.fg-black a{
+                cursor: pointer;
+                color:#000;
+            }
+        }
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "request_id": "adf0-3b83c8d8eb0e-d705b620-3086-4133",
+    "finished": true,
+    "statusPerc": 100,
+    "statusMsg": "Completato",
+    "metadata": [
+        {
+            "id": "1",
+            "idVideo": "1",
+            "type": "text",
+            "start": "00:00:01.000",
+            "end": "00:00:02.000",
+            "data": "ciao"
+        },
+        {
+            "id": "2",
+            "idVideo": "1",
+            "type": "text",
+            "start": "00:00:05.000",
+            "end": "00:00:08.000",
+            "data": "francesco"
+        },
+        {
+            "id": "3",
+            "idVideo": "1",
+            "type": "action",
+            "start": "00:00:07.000",
+            "end": "00:00:01.000",
+            "data": "speak"
+        },
+        {
+            "id": "4",
+            "idVideo": "1",
+            "type": "change",
+            "start": "00:00:08.000",
+            "end": "00:00:08.000",
+            "data": ""
+        }
+    ]
+}

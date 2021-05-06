@@ -1,0 +1,37 @@
+<div class="loginForm panel panel-default">
+    <div class="panel-heading">
+        Login
+    </div>
+    <div class="panel-body">
+        <form name="loginForm.form" ng-submit="loginForm.submit(loginForm.form)">
+            
+            <div class="input-group"> <!-- USERNAME input -->
+                <span class="input-group-addon" id="username">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </span>
+                <input type="text" class="form-control" placeholder="Username" 
+                    aria-describedby="username"
+                    ng-model="loginForm.loginData.username" required>
+            </div>
+
+            <div class="input-group"> <!-- PASSWORD input -->
+                <span class="input-group-addon" id="password">
+                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                </span>    
+                <input type="{{ loginForm.passwordVisible ? 'text' : 'password' }}" 
+                    class="form-control" placeholder="Password" aria-describedby="password"
+                    ng-model="loginForm.loginData.password" required>
+                <span class="input-group-addon" 
+                    title="{{ loginForm.passwordVisible ? 'Nascondi password' : 'Mostra Password' }}" 
+                    ng-click="loginForm.togglePasswordVisibility()">
+                    <span class="glyphicon" 
+                        ng-class="{
+                            'glyphicon-eye-close': loginForm.passwordVisible === true,
+                            'glyphicon-eye-open': loginForm.passwordVisible === false, }" aria-hidden="true"></span>
+                </span>
+            </div>
+
+            <button type="submit" class="btn col-xs-12 btn-primary loginBtn">Entra</button>
+        </form>
+    </div>
+</div>
